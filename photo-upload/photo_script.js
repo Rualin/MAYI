@@ -13,6 +13,7 @@ const recipesContainer = document.getElementById('recipes-container');
 // Состояние приложения
 let currentState = {
     photo: null,
+    file: null,
     recipes: []
 };
 
@@ -22,6 +23,12 @@ initialBtn.addEventListener('click', () => fileInput.click());
 fileInput.addEventListener('change', function(e) {
     if (this.files.length > 0) {
         const file = this.files[0];
+        currentState.file = file;
+
+        if (!validateFile(file)){
+            return;
+        }
+
         const reader = new FileReader();
         
         reader.onload = function(e) {
@@ -47,6 +54,26 @@ fileInput.addEventListener('change', function(e) {
     }
 });
 
+// Валидация файла
+function validateFile(file) {
+    const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    
+    if (!validTypes.includes(file.type)) {
+        alert('Пожалуйста, выберите файл изображения (JPEG, PNG или WebP)');
+        fileInput.value = '';
+        return false;
+    }
+    
+    if (file.size > maxSize) {
+        alert('Файл слишком большой. Максимальный размер: 5MB');
+        fileInput.value = '';
+        return false;
+    }
+    
+    return true;
+}
+
 // Change file button
 changeBtn.addEventListener('click', () => {
     fileInput.value = '';
@@ -64,19 +91,55 @@ submitBtn.addEventListener('click', async function() {
     const originalText = this.innerHTML;
     this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Обработка...';
     this.disabled = true;
+    changeBtn.disabled = true;
 
     try {
-        const foundRecipes = await simulateFileProcessing(currentState.photo);
-        currentState.recipes = foundRecipes;
-        displayRecipes(foundRecipes);
+        // Создаем FormData для отправки
+        const formData = new FormData();
+        formData.append('image', currentState.file);
+        
+        // Отправляем на бэкенд
+        const response = await fetch('http://localhost:3000/upload', {
+            method: 'POST',
+            body: formData,
+            // headers не нужны - FormData автоматически устанавливает multipart/form-data
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        if (data.error) {
+            throw new Error(data.error);
+        }
+
+        currentState.recipes = data.recipes || [];
+        displayRecipes(currentState.recipes);
         saveState();
+        
     } catch (error) {
-        console.error('Error:', error);
-        alert('Произошла ошибка при обработке фото.');
+        console.error('Ошибка при отправке:', error);
+        alert(`Ошибка при обработке фото: ${error.message}`);
     } finally {
         this.innerHTML = originalText;
         this.disabled = false;
+        changeBtn.disabled = false;
     }
+
+    // try {
+    //     const foundRecipes = await simulateFileProcessing(currentState.photo);
+    //     currentState.recipes = foundRecipes;
+    //     displayRecipes(foundRecipes);
+    //     saveState();
+    // } catch (error) {
+    //     console.error('Error:', error);
+    //     alert('Произошла ошибка при обработке фото.');
+    // } finally {
+    //     this.innerHTML = originalText;
+    //     this.disabled = false;
+    // }
 });
 
 // Display recipes function
