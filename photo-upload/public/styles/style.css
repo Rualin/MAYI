@@ -268,8 +268,33 @@ body {
 
 /* Responsive Styles */
 @media (max-width: 768px) {
-    .subheader-content {
+    .header-container {
         flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    nav {
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .features-list {
+        flex-direction: column;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    .footer-section {
+        text-align: center;
+    }
+    
+    .social-media {
+        justify-content: center;
     }
 }
 
@@ -314,4 +339,158 @@ body {
 /* Отступы между чекбоксами */
 .form-check {
     margin-bottom: 0.5rem;
+}
+
+/* Image Gallery Styles */
+.image-gallery {
+    /* margin: 40px; */
+    width: 100%;
+    padding: 40px 80px;
+    justify-content: center;
+}
+
+.image-row {
+    display: flex;
+    justify-content: space-between;
+    width: 1286px;
+    gap: 35px;
+    margin-top: 30px;
+}
+
+.image-item {
+    /* flex: 1; */
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.image-container {
+    width: 405px;
+    border-radius: 30px;
+    overflow: hidden;
+    margin-bottom: 25px;
+}
+
+.image-container img {
+    width: 405px;
+    height: 405px;
+    object-fit: cover;
+    display: block;
+}
+
+.text-container {
+    width: 100%;
+    text-align: left;
+    padding: 0 5px;
+}
+
+.text-container h3 {
+    margin: 0 0 8px 0;
+    font-size: 24px;
+    color: #000;
+}
+
+.text-container p {
+    margin: 0;
+    color: #828282;
+    font-size: 24px;
+    line-height: 1.5;
+}
+
+/* Intro Section Styles */
+.intro-section {
+    padding: 44px 80px;
+    /* display: flex; */
+    justify-content: center;
+    background-color: #fff; /* Фон секции */
+}
+  
+.intro-container {
+    display: flex;
+    max-width: 1285px;
+    width: 100%;
+    background-color: white;
+    overflow: hidden;
+    align-items: flex-start;
+}
+  
+.intro-container img {
+    width: 494px;
+    height: 494px;
+    object-fit: cover;
+    border-radius: 30px;
+}
+  
+.intro-text {
+    /* width: 749px; */
+    padding-left: 42px;
+    color: #000;
+}
+  
+.intro-text h2 {
+    width: 749px;
+    font-size: 60px;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+  
+.intro-text p {
+    width: 722px;
+    font-size: 32px;
+    line-height: 1.5;
+    letter-spacing: 0.06rem;
+}
+
+.line {
+    width: 1164px;
+    height: 3px;
+    background-color: #000;
+    margin: 103px 58px 4px 58px;
+}
+
+/* Recipe Section Styles */
+.recipe-section {
+    padding: 44px 80px;
+    /* display: flex; */
+    justify-content: center;
+    background-color: #fff; /* Фон секции */
+}
+  
+.recipe-container {
+    display: flex;
+    max-width: 1285px;
+    width: 100%;
+    background-color: white;
+    overflow: hidden;
+    align-items: flex-start;
+}
+  
+.recipe-container img {
+    width: 494px;
+    height: 494px;
+    object-fit: cover;
+    border-radius: 30px;
+}
+  
+.recipe-text {
+    align-items: center;
+    /* width: 749px; */
+    padding-left: 42px;
+    color: #000;
+}
+  
+.recipe-text h2 {
+    /* width: 749px; */
+    font-size: 48px;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+  
+.recipe-text p {
+    width: 722px;
+    font-size: 32px;
+    line-height: 1.5;
+    letter-spacing: 0.06rem;
 }
