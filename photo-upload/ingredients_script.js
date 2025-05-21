@@ -1,96 +1,28 @@
-// Предопределенный список ингредиентов (как будто загружен из TXT файла)
-const ingredientsList = `
-    соль
-    сахар
-    вода
-    мука
-    яйца
-    молоко
-    масло растительное
-    картофель
-    фарш свиной
-    фарш куриный
-    фарш говядина
-    хлеб
-    перец молотый
-    панировочные сухари
-    лук репчатый
-    сливочное масло
-    колбаса
-    майонез
-    хлопья овсяные
-    творог
-    манная крупа
-    кефир
-    сода
-    морковь
-    чеснок
-    свинина
-    говядина
-    помидоры
-    консервы рыбные
-    свекла
-    специи
-    курица 
-    курица окорок
-    лавровый лист
-    сыр твердый
-    кукуруза консервированная
-    пшено
-    укроп
-    лук репчатый сладкий
-    тимьян
-    бульон говяжий
-    бульон куриный
-    горох
-    рис
-    перец болгарский
-    паприка
-    лук зеленый
-    филе куриное
-    вермишель
-    зелень 
-    рис пропаренный
-    приправа для плова
-    томатная паста
-    спагетти
-    грудинка вареная
-    сыр пармезан
-    масло оливковое
-    соус терияки
-    сливки
-    сосиски
-    мука кукурузная
-    разрыхлитель
-    капуста 
-    уксус
-    желтки
-    сметана
-    сельдерей
-    горчица
-    колбаса вареная
-    зеленый горошек
-    соленые огурцы
-    капуста квашеная
-    макароны
-    огурцы
-    шоколад
-    какао-порошок
-    кофе  растворимый
-    яблоко
-`;
 
 // Загрузка списка ингредиентов при открытии страницы
 document.addEventListener('DOMContentLoaded', function() {
-// Имитация загрузки с небольшой задержкой
-    setTimeout(() => {
-        const ingredients = ingredientsList.split('\n')
-            .map(line => line.trim())
-            .filter(line => line.length > 0);
-        
-        renderIngredients(ingredients);
-        document.getElementById('recipeBtn').disabled = false;
-    }, 500);
+    // URL RAW-файла на GitHub (замените на ваш реальный URL)
+    const githubRawUrl = 'https://raw.githubusercontent.com/Rualin/MAYI/refs/heads/site/photo-upload/ingredients_list.txt';
+    
+    fetch(githubRawUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Не удалось загрузить список ингредиентов');
+            }
+            return response.text();
+        })
+        .then(text => {
+            const ingredients = text.split('\n')
+                .map(line => line.trim())
+                .filter(line => line.length > 0);
+            
+            renderIngredients(ingredients);
+            document.getElementById('recipeBtn').disabled = false;
+        })
+        .catch(error => {
+            console.error('Ошибка загрузки:', error);
+            alert('Ошибка загрузки списка ингредиентов');
+        });
 });
 
 // Функция отрисовки чекбоксов
@@ -123,28 +55,36 @@ document.getElementById('recipeBtn').addEventListener('click', function() {
         return;
     }
 
+    // Данные для отправки
     const ingredientsData = {
         selectedIngredients: selectedIngredients,
         timestamp: new Date().toISOString()
     };
 
-    const jsonString = JSON.stringify(ingredientsData, null, 2);
-    downloadJSON(jsonString, 'ingredients.json');
+    // URL вашего сервера (замените на реальный)
+    const serverUrl = 'http://localhost:3000/api/submit';
+    
+    // Отправка данных на сервер
+    fetch(serverUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(ingredientsData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Ошибка сервера');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Успешно отправлено:', data);
+        alert('Ваши ингредиенты успешно отправлены!');
+        // Здесь можно добавить обработку ответа от сервера
+    })
+    .catch(error => {
+        console.error('Ошибка:', error);
+        alert('Произошла ошибка при отправке данных');
+    });
 });
-
-// Функция скачивания JSON
-function downloadJSON(jsonString, filename) {
-    const blob = new Blob([jsonString], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-
-    setTimeout(() => {
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    }, 100);
-}

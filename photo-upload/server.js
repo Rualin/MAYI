@@ -6,7 +6,9 @@ const app = express();
 const port = 3000;
 
 // Включаем CORS для всех запросов
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000' // Укажите конкретный домен
+}));
 
 // Увеличиваем лимит на размер загружаемых файлов (например, до 10MB)
 app.use(express.json({ limit: '10mb' }));
