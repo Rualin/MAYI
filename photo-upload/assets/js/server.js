@@ -41,20 +41,20 @@ const upload = multer({
     limits: { fileSize: 5 * 1024 * 1024 } // 5MB
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../..')));
 app.use(express.static(path.join(__dirname)));
 
 // Роуты для страниц
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'start_page.html'));
+    res.sendFile(path.join(__dirname, '../../start_page.html'));
 });
 
 app.get('/load_photo_page', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'load_photo_page.html'));
+    res.sendFile(path.join(__dirname, '../../load_photo_page.html'));
 });
 
 app.get('/ingredients_page', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'ingredients_page.html'));
+    res.sendFile(path.join(__dirname, '../../ingredients_page.html'));
 });
 
 // Эндпоинт для загрузки фото

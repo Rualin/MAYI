@@ -1,0 +1,23 @@
+/* Убираем стандартные отступы у списка
+#dish-list {
+    padding-left: 0;                /* Убираем отступ слева
+}
+
+/* Стили для элементов списка
+#dish-list li {
+    list-style: none;               /* Убираем маркеры
+    margin-bottom: 10px;            /* Отступ снизу
+}
+
+/* Ссылки в списке
+#dish-list a {
+    text-decoration: none;          /* Убираем подчеркивание
+    color: #333;                    /* Темный цвет текста 
+    font-size: 18px;                /* Размер шрифта 
+}
+
+/* Эффект при наведении на ссылку
+#dish-list a:hover {
+    color: #0066cc;                 /* Синий цвет текста
+    text-decoration: underline;     /* Подчеркивание
+} */

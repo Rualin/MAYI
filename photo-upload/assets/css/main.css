@@ -1,0 +1,16 @@
+/* Импорт всех модулей */
+@import 'base/_base.css';
+@import 'components/_buttons.css';
+@import 'components/_header.css';
+@import 'components/_cards.css';
+@import 'components/_checkboxes.css';
+@import 'components/_dishlist.css';
+@import 'components/_footer.css';
+@import 'components/_gallery.css';
+@import 'components/_header.css';
+@import 'components/_intro.css';
+@import 'components/_recipecards.css';
+@import 'components/_recipesection.css';
+@import 'components/_responsive.css';
+@import 'components/_subheader.css';
+@import 'components/_upload.css';

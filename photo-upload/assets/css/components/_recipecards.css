@@ -1,0 +1,48 @@
+.recipe-card {
+    height: 100%;                   /* Занимает всю высоту */
+    transition: transform 0.3s ease; /* Плавная анимация */
+    border: 1px solid #eee;         /* Серая рамка */
+    border-radius: 8px;             /* Скругление углов */
+    overflow: hidden;               /* Обрезаем содержимое */
+    cursor: pointer;                /* Курсор-указатель */
+    background-color: #f1f1f1;      /* Светло-серый фон */
+}
+
+/* Эффект при наведении на карточку */
+.recipe-card:hover {
+    transform: translateY(-5px);    /* Сдвиг вверх */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05); /* Тень */
+}
+
+/* Тело карточки */
+.recipe-card-body {
+    padding: 20px;                  /* Внутренние отступы */
+}
+
+/* Заголовок рецепта */
+.recipe-title {
+    font-size: 1.2rem;              /* Размер шрифта */
+    margin-bottom: 15px;            /* Отступ снизу */
+    color: #333;                    /* Темный текст */
+}
+
+/* Список ингредиентов */
+.ingredients-list {
+    padding-left: 20px;             /* Отступ слева */
+    color: #666;                    /* Серый текст */
+    font-size: 1.2rem;              /* Размер шрифта */
+    margin-left: 0;                 /* Убираем отступ */
+    text-align: left;               /* Выравнивание по левому краю */
+}
+
+/* Элементы списка */
+.ingredients-list li {
+    margin-bottom: 5px;             /* Отступ снизу */
+    list-style-position: inside;    /* Маркеры внутри блока */
+}
+
+/* Ссылка на рецепт */
+.recipe-link {
+    text-decoration: none;          /* Убираем подчеркивание */
+    color: inherit;                 /* Наследуем цвет текста */
+}

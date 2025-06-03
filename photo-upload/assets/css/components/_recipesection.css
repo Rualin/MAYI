@@ -1,0 +1,48 @@
+.recipe-section {
+    padding: 44px 80px;            /* Внутренние отступы */
+    justify-content: center;       /* Центрирование */
+    background-color: #fff;        /* Белый фон */
+}
+  
+/* Контейнер для контента */
+.recipe-container {
+    display: flex;
+    max-width: 1285px;            /* Максимальная ширина */
+    width: 100%;                  /* На всю ширину */
+    background-color: white;      /* Белый фон */
+    overflow: hidden;             /* Обрезаем содержимое */
+    align-items: flex-start;      /* Выравнивание по верху */
+}
+  
+/* Изображение рецепта */
+.recipe-container img {
+    width: 404px;                 /* Фиксированная ширина */
+    height: 506px;                /* Фиксированная высота */
+    object-fit: cover;            /* Обрезаем изображение */
+    border-radius: 30px;          /* Скругление углов */
+}
+  
+/* Текстовый блок */
+.recipe-text {
+    align-items: center;          /* Выравнивание по центру */
+    padding-left: 42px;          /* Отступ слева */
+    padding-right: 58px;
+    color: #000;                 /* Черный текст */
+    text-align: justify;
+}
+  
+/* Заголовок рецепта */
+.recipe-text h2 {
+    font-size: 48px;             /* Большой шрифт */
+    margin-top: 0;               /* Убираем отступ сверху */
+    margin-bottom: 20px;         /* Отступ снизу */
+    font-weight: bold;           /* Жирное начертание */
+}
+  
+/* Описание рецепта */
+.recipe-text p {
+    width: 722px;                /* Фиксированная ширина */
+    font-size: 32px;             /* Большой шрифт */
+    line-height: 1.5;            /* Межстрочный интервал */
+    letter-spacing: 0.06rem;     /* Расстояние между буквами */
+}

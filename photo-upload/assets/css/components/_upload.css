@@ -1,0 +1,14 @@
+/* Контейнер для кнопок загрузки */
+.file-upload-container {
+    display: flex;
+    align-self: center;             /* Выравнивание по центру */
+    gap: 10px;                      /* Расстояние между кнопками */
+    max-width: 400px;               /* Максимальная ширина */
+}
+
+/* Текст с информацией о файле */
+.file-info, .file-info-custom {
+    margin-top: 5px;                /* Отступ сверху */
+    font-size: 13px;                /* Мелкий шрифт */
+    color: #666;                    /* Серый цвет текста */
+}

@@ -1,0 +1,70 @@
+/* Фиксированная шапка */
+.site-header {
+    background-color: #ffffff;       /* Белый фон */
+    position: sticky;                /* Прилипает при скролле */
+    top: 0;                         /* Прижимаем к верху */
+    z-index: 100;                   /* Поверх других элементов */
+}
+
+/* Контейнер для содержимого шапки */
+.header-container {
+    display: flex;                  /* Гибкое расположение элементов */
+    justify-content: space-between; /* Распределение по ширине */
+    align-items: center;            /* Выравнивание по центру */
+    max-width: 1200px;              /* Максимальная ширина */
+    margin: 0 auto;                 /* Центрирование */
+    padding: 0 20px;                /* Внутренние отступы */
+}
+
+/* Блок с логотипом */
+.logo-container {
+    display: flex;
+    align-items: left;              /* Выравнивание по левому краю */
+}
+
+/* Стили для логотипа */
+.site-icon, .site-icon-custom {
+    height: 72px;                   /* Фиксированная высота */
+    width: 249px;                   /* Фиксированная ширина */
+    object-fit: contain;            /* Сохранение пропорций */
+    margin-right: 15px;             /* Отступ справа */
+}
+
+/* Навигационное меню */
+.site-nav {
+    display: flex;
+    gap: 30px;                      /* Расстояние между пунктами */
+}
+
+/* Ссылки в меню */
+.nav-link, .nav-link-custom {
+    text-decoration: none;          /* Убираем подчеркивание */
+    color: #333333;                 /* Цвет текста */
+    font-weight: 500;               /* Полужирное начертание */
+    font-size: 20px;                /* Размер шрифта */
+    position: relative;             /* Для псевдоэлемента */
+    padding: 5px 0;                 /* Внутренние отступы */
+    transition: color 0.3s ease;    /* Плавное изменение цвета */
+}
+
+/* Эффект при наведении на ссылку */
+.nav-link:hover, .nav-link-custom:hover {
+    color: #0066cc;                 /* Изменение цвета */
+}
+
+/* Подчеркивание ссылки при наведении */
+.nav-link::after, .nav-link-custom::after {
+    content: '';                    /* Псевдоэлемент */
+    position: absolute;             /* Абсолютное позиционирование */
+    bottom: 0;                      /* Прижимаем к низу */
+    left: 0;                        /* Начинаем слева */
+    width: 0;                       /* Изначально невидим */
+    height: 2px;                    /* Толщина линии */
+    background-color: #0066cc;      /* Цвет линии */
+    transition: width 0.3s ease;    /* Плавное появление */
+}
+
+/* Показываем подчеркивание при наведении */
+.nav-link:hover::after, .nav-link-custom:hover::after {
+    width: 100%;                    /* Полная ширина */
+}
