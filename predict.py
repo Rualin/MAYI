@@ -1,25 +1,40 @@
-import argparse
+import requests
+import json
 
 from ultralytics import YOLO
 from PIL import Image
 
 
-def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-wp", "--weights_path", type=str, default="best.pt")
-    parser.add_argument("-ip", "--image_path", type=str, default="test_image.jpg")
-    parser.add_argument("-v", "--verbose", type=bool, default=False, help="True if you want to see logs of model")
-    return parser.parse_args()
+WEIGHTS_PATH = "best.pt"
+URL = "https://raw.githubusercontent.com/Rualin/MAYI/model/best.pt"
 
-def get_image(ip):
-    img = Image.open(ip)
+r = requests.get(URL)
+with open(WEIGHTS_PATH, "wb") as f:
+    f.write(r.content)
+
+model = YOLO(WEIGHTS_PATH)
+
+def get_image():
+    img = Image.open("test_image.jpg")
     return img
 
+def inference(img, threshold=0.6):
+    pred = model.predict(img, verbose=False)[0]
+    pred = pred.to_json()
+    json_obj = json.loads(pred)
+    # print(type(json_obj))
+    # print(len(json_obj))
+    res = []
+    for dic in json_obj:
+        if dic["confidence"] > threshold and dic["name"] not in res:
+            res.append(dic["name"])
+    res_dict = dict()
+    res_dict["selectedIngredients"] = res
+    return json.dumps(res_dict)
+
+
 if __name__ == "__main__":
-    args = parse_args()
-    wp = args.weights_path
-    ip = args.image_path
-    verb = args.verbose
-    model = YOLO(wp)
-    img = get_image(ip)
-    res = model.predict(img, verbose=verb)[0].show()
+    print("This file must be a library!!!")
+    # img = get_image()
+    # res = inference(img)
+    # print(res)
