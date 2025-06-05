@@ -87,26 +87,26 @@ submitBtn.addEventListener('click', async function() {
         return;
     }
 
-    // Show loading state
+    // Показываем состояние загрузки
     const originalText = this.innerHTML;
     this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Обработка...';
     this.disabled = true;
     changeBtn.disabled = true;
 
     try {
-        // Создаем FormData для отправки
         const formData = new FormData();
         formData.append('image', currentState.file);
         
-        // Отправляем на бэкенд
-        const response = await fetch('http://localhost:3000/upload', {
+        // Отправляем на FastAPI бэкенд (обычно на том же origin, но порт может быть другим, например 8000)
+        const response = await fetch('http://127.0.0.1:3000/upload', {
             method: 'POST',
             body: formData,
-            // headers не нужны - FormData автоматически устанавливает multipart/form-data
+            // Заголовки не нужны, FormData сам устанавливает 'multipart/form-data'
         });
 
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            const errorData = await response.json();
+            throw new Error(errorData.detail || `Ошибка HTTP: ${response.status}`);
         }
 
         const data = await response.json();
@@ -127,19 +127,6 @@ submitBtn.addEventListener('click', async function() {
         this.disabled = false;
         changeBtn.disabled = false;
     }
-
-    // try {
-    //     const foundRecipes = await simulateFileProcessing(currentState.photo);
-    //     currentState.recipes = foundRecipes;
-    //     displayRecipes(foundRecipes);
-    //     saveState();
-    // } catch (error) {
-    //     console.error('Error:', error);
-    //     alert('Произошла ошибка при обработке фото.');
-    // } finally {
-    //     this.innerHTML = originalText;
-    //     this.disabled = false;
-    // }
 });
 
 // Display recipes function
