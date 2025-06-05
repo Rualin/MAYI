@@ -19,6 +19,13 @@ def get_image():
     return img
 
 def inference(img, threshold=0.6):
+    """ Function to inference model.\n
+    Arguments:
+        - img - image in PIL Image (opencv) format to recognize products
+        - threshold (optional) - float from 0 to 1 to choose confidence
+    Return:
+        - json file in format {"selectedIngredients": [product1, product2, ...]}
+    """
     pred = model.predict(img, verbose=False)[0]
     pred = pred.to_json()
     json_obj = json.loads(pred)
