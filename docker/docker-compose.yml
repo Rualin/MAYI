@@ -1,0 +1,36 @@
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - upp_db:/var/lib/postgresql/data
+    ports:
+      - 5433:5432
+    networks:
+      - fapi
+    healthcheck:
+     test: ["CMD-SHELL", "pg_isready -U postgres"]
+     interval: 5s
+     timeout: 5s
+     retries: 5
+
+  api:
+    image: my-fastapi-app
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: upp
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+    ports:
+      - 8080:8080
+    networks:
+      - fapi
+
+networks:
+  fapi:
+
+volumes:
+  upp_db:
