@@ -56,7 +56,6 @@ def analyze_image(image_path: str) -> List[Dict]:
                 "Яичные желтки - 4 шт",
                 "Пармезан - 50 г"
             ],
-            "confidence": 0.85
         },
         { 
             "name": "Салат Цезарь", 
@@ -66,8 +65,20 @@ def analyze_image(image_path: str) -> List[Dict]:
                 "Листья салата",
                 "Пармезан",
                 "Сухарики"
-            ],
-            "confidence": 0.78
+            ]
+        },
+        {
+            "name": 'Тирамису', 
+            "url": 'recipe3.html',
+            "ingredients": [
+                'Печенье Савоярди - 200 г',
+                'Сыр маскарпоне - 500 г',
+                'Яйца - 4 шт',
+                'Сахар - 100 г',
+                'Кофе эспрессо - 200 мл',
+                'Какао-порошок',
+                'Ликер Амаретто'
+            ]
         }
     ]
 
@@ -87,6 +98,18 @@ async def get_load_photo_page():
 @app.get("/ingredients_page.html", response_class=HTMLResponse)
 async def get_ingredients_page():
     return FileResponse("ingredients_page.html")
+
+@app.get("/recipe1.html", response_class=HTMLResponse)
+async def get_ingredients_page():
+    return FileResponse("recipe1.html")
+
+@app.get("/recipe2.html", response_class=HTMLResponse)
+async def get_ingredients_page():
+    return FileResponse("recipe2.html")
+
+@app.get("/recipe3.html", response_class=HTMLResponse)
+async def get_ingredients_page():
+    return FileResponse("recipe3.html")
 
 @app.post("/upload")
 async def upload_file(image: UploadFile = File(...)):
