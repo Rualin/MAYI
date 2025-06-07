@@ -1,65 +1,73 @@
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, UploadFile, File  # Added File here
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 from controllers.recipes import fetch_dishes_by_ingredients
-from controllers.predict import predict_data
+from controllers.predict import predict_ingredients
 from PIL import Image
 import uvicorn
+import io
+from googletrans import Translator
+from pydantic import BaseModel
+
+translator = Translator()
 
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],  # ← запятая в конце
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-@app.get("/api/dishes/by-ingredients/")
-async def get_dishes_by_ingredients(ingredients: str = Query(...)):
+class IngredientsRequest(BaseModel):
+    selectedIngredients: List[str]
+    timestamp: str
+
+@app.post("/submit")
+async def get_dishes_by_ingredients(request: IngredientsRequest):
     try:
-        ingredients_list = [i.strip() for i in ingredients.split(',') if i.strip()]
+        ingredients_list = request.selectedIngredients
         
         if not ingredients_list:
             raise HTTPException(status_code=400, detail="No ingredients provided")
-        
+        print(f"Received ingredients: {ingredients_list}")  # перед вызовом fetch_dishes_by_ingredients
+ 
         dishes = fetch_dishes_by_ingredients(ingredients_list)
         
+        print(f"Found dishes: {dishes}")  # после вызова fetch_dishes_by_ingredients
+
         return {
             "success": True,
             "dishes": [
                 {
                     "id": dish[0],
                     "name": dish[1],
-                    "receipt": dish[2]
+                    "receipt": dish[2],
+                    "url": f"/recipe/{dish[0]}",
+                    "ingredients": ingredients_list
                 } 
                 for dish in dishes
             ]
         }
-    
-    except HTTPException:
-        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-
+'''
 @app.post("/upload")
 async def upload_image(file: UploadFile = File(...)):
     try:
-        # Читаем изображение
         contents = await file.read()
-        image = Image.open(io.BytesIO(contents))
         
-        # Сохраняем временно для предсказания
-        image.save("temp_upload.jpg")
+        if not contents:
+            raise HTTPException(status_code=400, detail="Empty file")
+           
+        img = Image.open(io.BytesIO(contents))
+
+        ingredients = predict_ingredients(img)
         
-        # Получаем предсказание (нужно модифицировать predict.py)
-        ingredients = predict_data("temp_upload.jpg")  # Должен возвращать список ингредиентов
-        
-        # Получаем рецепты по ингредиентам
         dishes = fetch_dishes_by_ingredients(ingredients)
-        
+
         return {
             "success": True,
             "recipes": [
@@ -67,13 +75,61 @@ async def upload_image(file: UploadFile = File(...)):
                     "id": dish[0],
                     "name": dish[1],
                     "receipt": dish[2],
-                    "url": f"/recipe/{dish[0]}"
+                    "url": f"/recipe/{dish[0]}",
+                    "ingredients": ingredients
                 } 
                 for dish in dishes
             ]
         }
-    
+
+    except HTTPException:
+        raise
     except Exception as e:
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Image processing error: {str(e)}"
+        )
+'''
+@app.post("/upload")
+async def upload_image(file: UploadFile = File(...)):
+    print("\n=== Начало обработки запроса ===")  # Логирование
+    try:
+        contents = await file.read()
+        print(f"Размер файла: {len(contents)} байт")  # Логирование
+        
+        img = Image.open(io.BytesIO(contents))
+        print("Изображение успешно открыто")  # Логирование
+        
+        ingredients_en = predict_ingredients(img)
+        print(f"Найдены ингредиенты: {ingredients_en}")  # Логирование
+
+        ingredients = []
+        #for ingredient in ingredients_en:
+        #    translator = Translator(from_lang="en", to_lang="ru")
+        #    ingredients += [(translator.translate(ingredient))]
+
+        print(f"Найдены ингредиенты: {ingredients}")  # Логирование
+        
+        dishes = fetch_dishes_by_ingredients(ingredients)
+        print(f"Найдены рецепты: {dishes}")  # Логирование
+
+
+        return {
+            "success": True,
+            "recipes": [
+                {
+                    "id": dish[0],
+                    "name": dish[1],
+                    "receipt": dish[2],
+                    "url": f"/recipe/{dish[0]}",
+                    "ingredients": ingredients
+                } 
+                for dish in dishes
+            ] if dishes else []  # Явно возвращаем пустой массив, если dishes пусто
+        }
+
+    except Exception as e:
+        print(f"ОШИБКА: {str(e)}")  # Логирование
         raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":

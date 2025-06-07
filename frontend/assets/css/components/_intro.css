@@ -1,0 +1,55 @@
+.intro-section {
+    padding: 44px 80px;             /* Внутренние отступы */
+    justify-content: center;        /* Центрирование */
+    background-color: #fff;         /* Белый фон */
+}
+  
+/* Контейнер для контента */
+.intro-container {
+    display: flex;
+    max-width: 1285px;             /* Максимальная ширина */
+    width: 100%;                   /* На всю ширину */
+    background-color: white;       /* Белый фон */
+    overflow: hidden;              /* Обрезаем содержимое */
+    align-items: flex-start;       /* Выравнивание по верху */
+}
+  
+/* Изображение в секции */
+.intro-container img {
+    width: 494px;                  /* Фиксированная ширина */
+    height: 494px;                 /* Фиксированная высота */
+    object-fit: cover;             /* Обрезаем изображение */
+    border-radius: 30px;           /* Скругление углов */
+}
+  
+/* Текстовый блок */
+.intro-text {
+    padding-left: 42px;            /* Отступ слева */
+    color: #000;                   /* Черный текст */
+    text-align: justify;
+}
+  
+/* Заголовок секции */
+.intro-text h2 {
+    width: 749px;                  /* Фиксированная ширина */
+    font-size: 60px;               /* Очень большой шрифт */
+    margin-top: 0;                 /* Убираем отступ сверху */
+    margin-bottom: 20px;           /* Отступ снизу */
+    font-weight: bold;             /* Жирное начертание */
+}
+  
+/* Основной текст */
+.intro-text p {
+    width: 722px;                  /* Фиксированная ширина */
+    font-size: 32px;               /* Большой шрифт */
+    line-height: 1.5;              /* Межстрочный интервал */
+    letter-spacing: 0.06rem;       /* Расстояние между буквами */
+}
+
+/* Горизонтальная линия */
+.line {
+    width: 1164px;                 /* Фиксированная ширина */
+    height: 3px;                   /* Толщина линии */
+    background-color: #000;        /* Черный цвет */
+    margin: 103px 58px 4px 58px;  /* Внешние отступы */
+}

@@ -1,0 +1,34 @@
+/* Блок под шапкой */
+.subheader {
+    text-align: center;             /* Выравнивание по центру */
+    padding: 30px 20px;             /* Внутренние отступы */
+    margin-top: 15px;               /* Отступ сверху */
+}
+
+/* Контейнер для контента */
+.subheader-content {
+    display: flex;
+    justify-content: center;        /* Центрирование по горизонтали */
+    align-items: center;            /* Центрирование по вертикали */
+    gap: 20px;                      /* Расстояние между элементами */
+    flex-wrap: wrap;                /* Перенос на новую строку */
+    margin-bottom: 15px;            /* Отступ снизу */
+}
+
+/* Заголовок подшапки */
+.subheader-title, .subheader-title-custom {
+    color: #000;                    /* Черный цвет текста */
+    font-size: 2rem;                /* Размер шрифта */
+    margin-bottom: 10px;            /* Отступ снизу */
+    font-weight: 600;               /* Жирное начертание */
+}
+
+/* Основной текст подшапки */
+.subheader-text {
+    color: #000;                    /* Черный цвет текста */
+    font-size: 64px;                /* Большой размер шрифта */
+    font-weight: 700;               /* Жирное начертание */
+    max-width: 800px;               /* Максимальная ширина */
+    margin: 0 auto;                 /* Центрирование */
+    line-height: 1.5;               /* Межстрочный интервал */
+}

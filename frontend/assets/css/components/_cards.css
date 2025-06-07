@@ -1,0 +1,10 @@
+/* Карточки рецептов */
+.recipe-card {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.recipe-card:hover {
+  transform: translateY(-5px);
+}

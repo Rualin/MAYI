@@ -1,0 +1,496 @@
+/* Base Styles */
+body {
+    font-family: Inter, sans-serif;
+    margin: 0;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Header Styles */
+.site-header {
+    background-color: #ffffff;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.logo-container {
+    display: flex;
+    align-items: left;
+}
+
+.site-icon, .site-icon-custom {
+    height: 72px;
+    width: 249px;
+    object-fit: contain;
+    margin-right: 15px;
+}
+
+.site-nav {
+    display: flex;
+    gap: 30px;
+}
+
+.nav-link, .nav-link-custom {
+    text-decoration: none;
+    color: #333333;
+    font-weight: 500;
+    font-size: 20px;
+    position: relative;
+    padding: 5px 0;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover, .nav-link-custom:hover {
+    color: #0066cc;
+}
+
+.nav-link::after, .nav-link-custom::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #0066cc;
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after, .nav-link-custom:hover::after {
+    width: 100%;
+}
+
+/* Subheader Styles */
+.subheader {
+    text-align: center;
+    padding: 30px 20px;
+    margin-top: 15px;
+}
+
+.subheader-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.subheader-title, .subheader-title-custom {
+    color: #000;
+    font-size: 2rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.subheader-text {
+    color: #000;
+    font-size: 64px;
+    font-weight: 700;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+/* File Upload Styles */
+.file-upload-container {
+    display: flex;
+    align-self: center;
+    gap: 10px;
+    max-width: 400px;
+}
+
+.upload-btn, .primary-btn, .secondary-btn, 
+.upload-btn-custom, .primary-btn-custom, .secondary-btn-custom, .recipe-btn-custom {
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+
+.upload-btn, .primary-btn, 
+.upload-btn-custom, .primary-btn-custom, .recipe-btn-custom {
+    background: #000;
+    color: white;
+    border: none;
+}
+
+.upload-btn:hover, .primary-btn:hover,
+.upload-btn-custom:hover, .primary-btn-custom:hover, .recipe-btn-custom:hover {
+    background-color: #ffffff;
+    color: #000;
+    transform: translateY(-2px);
+    border: 1px solid #000;
+}
+
+.secondary-btn, .secondary-btn-custom {
+    background: #f1f1f1;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.secondary-btn:hover, .secondary-btn-custom:hover {
+    background: #e0e0e0;
+    transform: translateY(-2px);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.file-info, .file-info-custom {
+    margin-top: 5px;
+    font-size: 13px;
+    color: #666;
+}
+
+/* Dish List Styles */
+#dish-list {
+    padding-left: 0;
+}
+
+#dish-list li {
+    list-style: none;
+    margin-bottom: 10px;
+}
+
+#dish-list a {
+    text-decoration: none;
+    color: #333;
+    font-size: 18px;
+}
+
+#dish-list a:hover {
+    color: #0066cc;
+    text-decoration: underline;
+}
+
+/* Button Link Styles */
+.button-link {
+    display: inline-block;
+    padding: 7px 12px;
+    font-size: 16px;
+    color: black;
+    background-color: #E6E6E6;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.button-link:hover {
+    background-color: #d0d0d0;
+}
+
+/* Footer Styles */
+.footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.footer-section {
+    flex: 1;
+    margin-bottom: 20px;
+}
+
+.footer-section h3 {
+    margin-bottom: 10px;
+}
+
+.footer-section p {
+    margin-bottom: 10px;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 5px;
+}
+
+.footer-section ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer-section ul li a:hover {
+    text-decoration: underline;
+}
+
+.social-media {
+    display: flex;
+    gap: 10px;
+}
+
+.social-icon {
+    color: #fff;
+    text-decoration: none;
+}
+
+.social-icon:hover {
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 10px;
+    border-top: 1px solid #444;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    nav {
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .features-list {
+        flex-direction: column;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    .footer-section {
+        text-align: center;
+    }
+    
+    .social-media {
+        justify-content: center;
+    }
+}
+
+.recipe-card {
+    height: 100%;
+    transition: transform 0.3s ease;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer; /* Курсор-указатель при наведении */
+    background-color: #f1f1f1;
+}
+
+.recipe-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+.recipe-card-body {
+    padding: 20px;
+}
+.recipe-title {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #333;
+}
+.ingredients-list {
+    padding-left: 20px;
+    color: #666;
+    font-size: 1.2rem;
+    margin-left: 0; /* Убираем отступ слева */
+    text-align: left; /* Выравнивание по левому краю */
+}
+.ingredients-list li {
+    margin-bottom: 5px;
+    list-style-position: inside; /* Точки списка внутри блока */
+}
+.recipe-link {
+    text-decoration: none; /* Убираем подчёркивание */
+    color: inherit; /* Наследуем цвет текста */
+}
+
+/* Отступы между чекбоксами */
+.form-check {
+    margin-bottom: 0.5rem;
+}
+
+/* Image Gallery Styles */
+.image-gallery {
+    /* margin: 40px; */
+    width: 100%;
+    padding: 40px 80px;
+    justify-content: center;
+}
+
+.image-row {
+    display: flex;
+    justify-content: space-between;
+    width: 1286px;
+    gap: 35px;
+    margin-top: 30px;
+}
+
+.image-item {
+    /* flex: 1; */
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.image-container {
+    width: 405px;
+    border-radius: 30px;
+    overflow: hidden;
+    margin-bottom: 25px;
+}
+
+.image-container img {
+    width: 405px;
+    height: 405px;
+    object-fit: cover;
+    display: block;
+}
+
+.text-container {
+    width: 100%;
+    text-align: left;
+    padding: 0 5px;
+}
+
+.text-container h3 {
+    margin: 0 0 8px 0;
+    font-size: 24px;
+    color: #000;
+}
+
+.text-container p {
+    margin: 0;
+    color: #828282;
+    font-size: 24px;
+    line-height: 1.5;
+}
+
+/* Intro Section Styles */
+.intro-section {
+    padding: 44px 80px;
+    /* display: flex; */
+    justify-content: center;
+    background-color: #fff; /* Фон секции */
+}
+  
+.intro-container {
+    display: flex;
+    max-width: 1285px;
+    width: 100%;
+    background-color: white;
+    overflow: hidden;
+    align-items: flex-start;
+}
+  
+.intro-container img {
+    width: 494px;
+    height: 494px;
+    object-fit: cover;
+    border-radius: 30px;
+}
+  
+.intro-text {
+    /* width: 749px; */
+    padding-left: 42px;
+    color: #000;
+}
+  
+.intro-text h2 {
+    width: 749px;
+    font-size: 60px;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+  
+.intro-text p {
+    width: 722px;
+    font-size: 32px;
+    line-height: 1.5;
+    letter-spacing: 0.06rem;
+}
+
+.line {
+    width: 1164px;
+    height: 3px;
+    background-color: #000;
+    margin: 103px 58px 4px 58px;
+}
+
+/* Recipe Section Styles */
+.recipe-section {
+    padding: 44px 80px;
+    /* display: flex; */
+    justify-content: center;
+    background-color: #fff; /* Фон секции */
+}
+  
+.recipe-container {
+    display: flex;
+    max-width: 1285px;
+    width: 100%;
+    background-color: white;
+    overflow: hidden;
+    align-items: flex-start;
+}
+  
+.recipe-container img {
+    width: 494px;
+    height: 494px;
+    object-fit: cover;
+    border-radius: 30px;
+}
+  
+.recipe-text {
+    align-items: center;
+    /* width: 749px; */
+    padding-left: 42px;
+    color: #000;
+}
+  
+.recipe-text h2 {
+    /* width: 749px; */
+    font-size: 48px;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+  
+.recipe-text p {
+    width: 722px;
+    font-size: 32px;
+    line-height: 1.5;
+    letter-spacing: 0.06rem;
+}

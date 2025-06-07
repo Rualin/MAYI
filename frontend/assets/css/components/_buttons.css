@@ -1,0 +1,59 @@
+/* Button Link Styles */
+.button-link {
+    display: inline-block;
+    padding: 7px 12px;
+    font-size: 16px;
+    color: black;
+    background-color: #E6E6E6;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.button-link:hover {
+    background-color: #d0d0d0;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.upload-btn, .primary-btn, .secondary-btn, 
+.upload-btn-custom, .primary-btn-custom, .secondary-btn-custom, .recipe-btn-custom {
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+
+.upload-btn, .primary-btn, 
+.upload-btn-custom, .primary-btn-custom, .recipe-btn-custom {
+    background: #000;
+    color: white;
+    border: none;
+}
+
+.upload-btn:hover, .primary-btn:hover,
+.upload-btn-custom:hover, .primary-btn-custom:hover, .recipe-btn-custom:hover {
+    background-color: #ffffff;
+    color: #000;
+    transform: translateY(-2px);
+    border: 1px solid #000;
+}
+
+.secondary-btn, .secondary-btn-custom {
+    background: #f1f1f1;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.secondary-btn:hover, .secondary-btn-custom:hover {
+    background: #e0e0e0;
+    transform: translateY(-2px);
+}

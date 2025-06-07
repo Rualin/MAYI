@@ -1,29 +1,39 @@
-import argparse
 from ultralytics import YOLO
 from PIL import Image
+import requests
 
-
-def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-wp", "--weights_path", type=str, default="best.pt")
-    parser.add_argument("-ip", "--image_path", type=str, default="test_image.jpg")
-    parser.add_argument("-v", "--verbose", type=bool, default=False, help="True if you want to see logs of model")
-    return parser.parse_args()
-
-def get_image(ip):
-    img = Image.open(ip)
-    return img
-
-def predict_data(image_path):
-    args = parse_args()
-    model = YOLO(args.weights_path)
-    img = get_image(image_path)
-    results = model.predict(img, verbose=args.verbose)[0]
+# Загрузка модели (вынесено в отдельную функцию для переиспользования)
+def load_model():
+    WEIGHTS_PATH = "best.pt"
+    URL = "https://raw.githubusercontent.com/Rualin/MAYI/model/best.pt"
     
-    # Извлекаем обнаруженные ингредиенты
-    ingredients = []
-    for box in results.boxes:
-        class_id = int(box.cls)
-        ingredients.append(results.names[class_id])
+    try:
+        model = YOLO(WEIGHTS_PATH)
+    except:
+        # Скачиваем веса, если локально нет
+        r = requests.get(URL)
+        with open(WEIGHTS_PATH, "wb") as f:
+            f.write(r.content)
+        model = YOLO(WEIGHTS_PATH)
     
-    return list(set(ingredients))  # Убираем дубликаты
+    return model
+
+# Глобальная инициализация модели
+model = load_model()
+
+def predict_ingredients(img, threshold=0.6):
+    # Предсказание
+    results = model.predict(img, verbose=False)
+    
+    # Собираем уникальные ингредиенты
+    ingredients = set()
+    
+    for result in results:
+        # Обрабатываем каждый обнаруженный объект
+        for box in result.boxes:
+            if box.conf > threshold:  # Проверяем уверенность
+                class_id = int(box.cls)  # ID класса
+                ingredient_name = result.names[class_id]  # Название класса
+                ingredients.add(ingredient_name)
+    
+    return sorted(ingredients)  # Возвращаем отсортированный список

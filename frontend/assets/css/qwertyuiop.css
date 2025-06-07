@@ -1,0 +1,604 @@
+/* ==================== */
+/* БАЗОВЫЕ СТИЛИ (GLOBAL) */
+/* ==================== */
+
+/* Основные стили для всей страницы */
+body {
+    font-family: Inter, sans-serif;  /* Основной шрифт */
+    margin: 0;                       /* Убираем отступы по умолчанию */
+    padding: 10px;                   /* Добавляем внутренний отступ */
+    box-sizing: border-box;          /* Корректный расчет размеров элементов */
+}
+
+/* ==================== */
+/* ШАПКА САЙТА (HEADER) */
+/* ==================== */
+
+/* Фиксированная шапка */
+.site-header {
+    background-color: #ffffff;       /* Белый фон */
+    position: sticky;                /* Прилипает при скролле */
+    top: 0;                         /* Прижимаем к верху */
+    z-index: 100;                   /* Поверх других элементов */
+}
+
+/* Контейнер для содержимого шапки */
+.header-container {
+    display: flex;                  /* Гибкое расположение элементов */
+    justify-content: space-between; /* Распределение по ширине */
+    align-items: center;            /* Выравнивание по центру */
+    max-width: 1200px;              /* Максимальная ширина */
+    margin: 0 auto;                 /* Центрирование */
+    padding: 0 20px;                /* Внутренние отступы */
+}
+
+/* Блок с логотипом */
+.logo-container {
+    display: flex;
+    align-items: left;              /* Выравнивание по левому краю */
+}
+
+/* Стили для логотипа */
+.site-icon, .site-icon-custom {
+    height: 72px;                   /* Фиксированная высота */
+    width: 249px;                   /* Фиксированная ширина */
+    object-fit: contain;            /* Сохранение пропорций */
+    margin-right: 15px;             /* Отступ справа */
+}
+
+/* Навигационное меню */
+.site-nav {
+    display: flex;
+    gap: 30px;                      /* Расстояние между пунктами */
+}
+
+/* Ссылки в меню */
+.nav-link, .nav-link-custom {
+    text-decoration: none;          /* Убираем подчеркивание */
+    color: #333333;                 /* Цвет текста */
+    font-weight: 500;               /* Полужирное начертание */
+    font-size: 20px;                /* Размер шрифта */
+    position: relative;             /* Для псевдоэлемента */
+    padding: 5px 0;                 /* Внутренние отступы */
+    transition: color 0.3s ease;    /* Плавное изменение цвета */
+}
+
+/* Эффект при наведении на ссылку */
+.nav-link:hover, .nav-link-custom:hover {
+    color: #0066cc;                 /* Изменение цвета */
+}
+
+/* Подчеркивание ссылки при наведении */
+.nav-link::after, .nav-link-custom::after {
+    content: '';                    /* Псевдоэлемент */
+    position: absolute;             /* Абсолютное позиционирование */
+    bottom: 0;                      /* Прижимаем к низу */
+    left: 0;                        /* Начинаем слева */
+    width: 0;                       /* Изначально невидим */
+    height: 2px;                    /* Толщина линии */
+    background-color: #0066cc;      /* Цвет линии */
+    transition: width 0.3s ease;    /* Плавное появление */
+}
+
+/* Показываем подчеркивание при наведении */
+.nav-link:hover::after, .nav-link-custom:hover::after {
+    width: 100%;                    /* Полная ширина */
+}
+
+/* ==================== */
+/* ПОДШАПКА (SUBHEADER) */
+/* ==================== */
+
+/* Блок под шапкой */
+.subheader {
+    text-align: center;             /* Выравнивание по центру */
+    padding: 30px 20px;             /* Внутренние отступы */
+    margin-top: 15px;               /* Отступ сверху */
+}
+
+/* Контейнер для контента */
+.subheader-content {
+    display: flex;
+    justify-content: center;        /* Центрирование по горизонтали */
+    align-items: center;            /* Центрирование по вертикали */
+    gap: 20px;                      /* Расстояние между элементами */
+    flex-wrap: wrap;                /* Перенос на новую строку */
+    margin-bottom: 15px;            /* Отступ снизу */
+}
+
+/* Заголовок подшапки */
+.subheader-title, .subheader-title-custom {
+    color: #000;                    /* Черный цвет текста */
+    font-size: 2rem;                /* Размер шрифта */
+    margin-bottom: 10px;            /* Отступ снизу */
+    font-weight: 600;               /* Жирное начертание */
+}
+
+/* Основной текст подшапки */
+.subheader-text {
+    color: #000;                    /* Черный цвет текста */
+    font-size: 64px;                /* Большой размер шрифта */
+    font-weight: 700;               /* Жирное начертание */
+    max-width: 800px;               /* Максимальная ширина */
+    margin: 0 auto;                 /* Центрирование */
+    line-height: 1.5;               /* Межстрочный интервал */
+}
+
+/* ==================== */
+/* ЗАГРУЗКА ФАЙЛОВ (UPLOAD) */
+/* ==================== */
+
+/* Контейнер для кнопок загрузки */
+.file-upload-container {
+    display: flex;
+    align-self: center;             /* Выравнивание по центру */
+    gap: 10px;                      /* Расстояние между кнопками */
+    max-width: 400px;               /* Максимальная ширина */
+}
+
+/* Общие стили для кнопок */
+.upload-btn, .primary-btn, .secondary-btn, 
+.upload-btn-custom, .primary-btn-custom, .secondary-btn-custom, .recipe-btn-custom {
+    padding: 10px 15px;             /* Внутренние отступы */
+    border-radius: 5px;             /* Скругление углов */
+    cursor: pointer;                /* Курсор-указатель */
+    font-size: 14px;                /* Размер шрифта */
+    align-items: center;            /* Выравнивание по центру */
+    gap: 8px;                       /* Расстояние между иконкой и текстом */
+    transition: all 0.3s;           /* Плавные анимации */
+}
+
+/* Основная кнопка (черная) */
+.upload-btn, .primary-btn, 
+.upload-btn-custom, .primary-btn-custom, .recipe-btn-custom {
+    background: #000;               /* Черный фон */
+    color: white;                   /* Белый текст */
+    border: none;                   /* Без рамки */
+}
+
+/* Эффект при наведении на основную кнопку */
+.upload-btn:hover, .primary-btn:hover,
+.upload-btn-custom:hover, .primary-btn-custom:hover, .recipe-btn-custom:hover {
+    background-color: #ffffff;      /* Белый фон */
+    color: #000;                    /* Черный текст */
+    transform: translateY(-2px);    /* Сдвиг вверх */
+    border: 1px solid #000;         /* Рамка */
+}
+
+/* Вторичная кнопка (серая) */
+.secondary-btn, .secondary-btn-custom {
+    background: #f1f1f1;            /* Светло-серый фон */
+    color: #333;                    /* Темный текст */
+    border: 1px solid #ddd;         /* Серая рамка */
+}
+
+/* Эффект при наведении на вторичную кнопку */
+.secondary-btn:hover, .secondary-btn-custom:hover {
+    background: #e0e0e0;            /* Темно-серый фон */
+    transform: translateY(-2px);    /* Сдвиг вверх */
+}
+
+/* Контейнер для группы кнопок */
+.action-buttons {
+    display: flex;
+    gap: 10px;                      /* Расстояние между кнопками */
+}
+
+/* Текст с информацией о файле */
+.file-info, .file-info-custom {
+    margin-top: 5px;                /* Отступ сверху */
+    font-size: 13px;                /* Мелкий шрифт */
+    color: #666;                    /* Серый цвет текста */
+}
+
+/* ==================== */
+/* СПИСОК БЛЮД (DISH LIST) */
+/* ==================== */
+
+/* Убираем стандартные отступы у списка */
+#dish-list {
+    padding-left: 0;                /* Убираем отступ слева */
+}
+
+/* Стили для элементов списка */
+#dish-list li {
+    list-style: none;               /* Убираем маркеры */
+    margin-bottom: 10px;            /* Отступ снизу */
+}
+
+/* Ссылки в списке */
+#dish-list a {
+    text-decoration: none;          /* Убираем подчеркивание */
+    color: #333;                    /* Темный цвет текста */
+    font-size: 18px;                /* Размер шрифта */
+}
+
+/* Эффект при наведении на ссылку */
+#dish-list a:hover {
+    color: #0066cc;                 /* Синий цвет текста */
+    text-decoration: underline;     /* Подчеркивание */
+}
+
+/* ==================== */
+/* ССЫЛКИ-КНОПКИ (BUTTON LINKS) */
+/* ==================== */
+
+.button-link {
+    display: inline-block;          /* Строчно-блочный элемент */
+    padding: 7px 12px;              /* Внутренние отступы */
+    font-size: 16px;                /* Размер шрифта */
+    color: black;                   /* Черный текст */
+    background-color: #E6E6E6;      /* Светло-серый фон */
+    border: none;                   /* Без рамки */
+    border-radius: 5px;             /* Скругление углов */
+    text-align: center;             /* Выравнивание по центру */
+    text-decoration: none;          /* Убираем подчеркивание */
+    cursor: pointer;                /* Курсор-указатель */
+}
+
+/* Эффект при наведении */
+.button-link:hover {
+    background-color: #d0d0d0;      /* Темно-серый фон */
+}
+
+/* ==================== */
+/* ПОДВАЛ (FOOTER) */
+/* ==================== */
+
+.footer {
+    background-color: #333;         /* Темный фон */
+    color: #fff;                    /* Белый текст */
+    padding: 20px 0;                /* Внутренние отступы */
+}
+
+/* Контейнер для содержимого подвала */
+.container {
+    width: 80%;                     /* Ширина контейнера */
+    margin: 0 auto;                 /* Центрирование */
+    text-align: center;             /* Выравнивание текста */
+}
+
+/* Гибкий контейнер для секций подвала */
+.footer-content {
+    display: flex;
+    justify-content: space-between; /* Распределение по ширине */
+    flex-wrap: wrap;                /* Перенос на новую строку */
+}
+
+/* Секция подвала */
+.footer-section {
+    flex: 1;                        /* Равномерное распределение */
+    margin-bottom: 20px;            /* Отступ снизу */
+}
+
+/* Заголовок секции */
+.footer-section h3 {
+    margin-bottom: 10px;            /* Отступ снизу */
+}
+
+/* Текст в секции */
+.footer-section p {
+    margin-bottom: 10px;            /* Отступ снизу */
+}
+
+/* Список в подвале */
+.footer-section ul {
+    list-style: none;               /* Убираем маркеры */
+    padding: 0;                     /* Убираем отступы */
+}
+
+/* Элементы списка */
+.footer-section ul li {
+    margin-bottom: 5px;             /* Отступ снизу */
+}
+
+/* Ссылки в подвале */
+.footer-section ul li a {
+    color: #fff;                    /* Белый цвет текста */
+    text-decoration: none;          /* Убираем подчеркивание */
+}
+
+/* Эффект при наведении на ссылку */
+.footer-section ul li a:hover {
+    text-decoration: underline;     /* Подчеркивание */
+}
+
+/* Социальные иконки */
+.social-media {
+    display: flex;
+    gap: 10px;                      /* Расстояние между иконками */
+}
+
+/* Стили для иконок */
+.social-icon {
+    color: #fff;                    /* Белый цвет */
+    text-decoration: none;          /* Убираем подчеркивание */
+}
+
+/* Эффект при наведении */
+.social-icon:hover {
+    text-decoration: underline;     /* Подчеркивание */
+}
+
+/* Нижняя часть подвала */
+.footer-bottom {
+    text-align: center;             /* Выравнивание по центру */
+    padding-top: 10px;              /* Отступ сверху */
+    border-top: 1px solid #444;     /* Верхняя граница */
+}
+
+/* ==================== */
+/* АДАПТИВНОСТЬ (RESPONSIVE) */
+/* ==================== */
+
+@media (max-width: 768px) {
+    /* Мобильная версия шапки */
+    .header-container {
+        flex-direction: column;     /* Вертикальное расположение */
+        gap: 15px;                  /* Расстояние между элементами */
+        text-align: center;         /* Выравнивание по центру */
+    }
+    
+    /* Мобильное меню */
+    nav {
+        gap: 15px;                  /* Расстояние между пунктами */
+        justify-content: center;    /* Центрирование */
+        flex-wrap: wrap;            /* Перенос на новую строку */
+    }
+    
+    /* Вертикальное расположение элементов */
+    .features-list {
+        flex-direction: column;    /* Вертикальный стек */
+    }
+    
+    /* Подвал на мобильных */
+    .footer-content {
+        flex-direction: column;     /* Вертикальный стек */
+        gap: 30px;                 /* Расстояние между секциями */
+    }
+    
+    /* Центрирование секций */
+    .footer-section {
+        text-align: center;        /* Выравнивание по центру */
+    }
+    
+    /* Центрирование иконок */
+    .social-media {
+        justify-content: center;    /* Центрирование */
+    }
+}
+
+/* ==================== */
+/* КАРТОЧКИ РЕЦЕПТОВ (RECIPE CARDS) */
+/* ==================== */
+
+.recipe-card {
+    height: 100%;                   /* Занимает всю высоту */
+    transition: transform 0.3s ease; /* Плавная анимация */
+    border: 1px solid #eee;         /* Серая рамка */
+    border-radius: 8px;             /* Скругление углов */
+    overflow: hidden;               /* Обрезаем содержимое */
+    cursor: pointer;                /* Курсор-указатель */
+    background-color: #f1f1f1;      /* Светло-серый фон */
+}
+
+/* Эффект при наведении на карточку */
+.recipe-card:hover {
+    transform: translateY(-5px);    /* Сдвиг вверх */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05); /* Тень */
+}
+
+/* Тело карточки */
+.recipe-card-body {
+    padding: 20px;                  /* Внутренние отступы */
+}
+
+/* Заголовок рецепта */
+.recipe-title {
+    font-size: 1.2rem;              /* Размер шрифта */
+    margin-bottom: 15px;            /* Отступ снизу */
+    color: #333;                    /* Темный текст */
+}
+
+/* Список ингредиентов */
+.ingredients-list {
+    padding-left: 20px;             /* Отступ слева */
+    color: #666;                    /* Серый текст */
+    font-size: 1.2rem;              /* Размер шрифта */
+    margin-left: 0;                 /* Убираем отступ */
+    text-align: left;               /* Выравнивание по левому краю */
+}
+
+/* Элементы списка */
+.ingredients-list li {
+    margin-bottom: 5px;             /* Отступ снизу */
+    list-style-position: inside;    /* Маркеры внутри блока */
+}
+
+/* Ссылка на рецепт */
+.recipe-link {
+    text-decoration: none;          /* Убираем подчеркивание */
+    color: inherit;                 /* Наследуем цвет текста */
+}
+
+/* ==================== */
+/* ЧЕКБОКСЫ (FORM CHECKBOXES) */
+/* ==================== */
+
+.form-check {
+    margin-bottom: 0.5rem;          /* Отступ снизу */
+}
+
+/* ==================== */
+/* ГАЛЕРЕЯ ИЗОБРАЖЕНИЙ (IMAGE GALLERY) */
+/* ==================== */
+
+.image-gallery {
+    width: 100%;                    /* На всю ширину */
+    padding: 40px 80px;             /* Внутренние отступы */
+    justify-content: center;        /* Центрирование */
+}
+
+/* Строка с изображениями */
+.image-row {
+    display: flex;
+    justify-content: space-between; /* Распределение по ширине */
+    width: 1286px;                  /* Фиксированная ширина */
+    gap: 35px;                      /* Расстояние между карточками */
+    margin-top: 30px;               /* Отступ сверху */
+}
+
+/* Элемент галереи */
+.image-item {
+    min-width: 0;                   /* Минимальная ширина */
+    display: flex;
+    flex-direction: column;         /* Вертикальное расположение */
+}
+
+/* Контейнер для изображения */
+.image-container {
+    width: 405px;                   /* Фиксированная ширина */
+    border-radius: 30px;            /* Скругление углов */
+    overflow: hidden;               /* Обрезаем содержимое */
+    margin-bottom: 25px;            /* Отступ снизу */
+}
+
+/* Изображение в галерее */
+.image-container img {
+    width: 405px;                   /* Фиксированная ширина */
+    height: 405px;                  /* Фиксированная высота */
+    object-fit: cover;              /* Обрезаем изображение */
+    display: block;                 /* Блочный элемент */
+}
+
+/* Текстовый блок */
+.text-container {
+    width: 100%;                    /* На всю ширину */
+    text-align: left;               /* Выравнивание по левому краю */
+    padding: 0 5px;                 /* Внутренние отступы */
+}
+
+/* Заголовок изображения */
+.text-container h3 {
+    margin: 0 0 8px 0;              /* Отступ снизу */
+    font-size: 24px;                /* Размер шрифта */
+    color: #000;                    /* Черный текст */
+}
+
+/* Описание изображения */
+.text-container p {
+    margin: 0;                      /* Убираем отступы */
+    color: #828282;                 /* Серый текст */
+    font-size: 24px;                /* Размер шрифта */
+    line-height: 1.5;               /* Межстрочный интервал */
+}
+
+/* ==================== */
+/* СЕКЦИЯ "INTRO" */
+/* ==================== */
+
+.intro-section {
+    padding: 44px 80px;             /* Внутренние отступы */
+    justify-content: center;        /* Центрирование */
+    background-color: #fff;         /* Белый фон */
+}
+  
+/* Контейнер для контента */
+.intro-container {
+    display: flex;
+    max-width: 1285px;             /* Максимальная ширина */
+    width: 100%;                   /* На всю ширину */
+    background-color: white;       /* Белый фон */
+    overflow: hidden;              /* Обрезаем содержимое */
+    align-items: flex-start;       /* Выравнивание по верху */
+}
+  
+/* Изображение в секции */
+.intro-container img {
+    width: 494px;                  /* Фиксированная ширина */
+    height: 494px;                 /* Фиксированная высота */
+    object-fit: cover;             /* Обрезаем изображение */
+    border-radius: 30px;           /* Скругление углов */
+}
+  
+/* Текстовый блок */
+.intro-text {
+    padding-left: 42px;            /* Отступ слева */
+    color: #000;                   /* Черный текст */
+}
+  
+/* Заголовок секции */
+.intro-text h2 {
+    width: 749px;                  /* Фиксированная ширина */
+    font-size: 60px;               /* Очень большой шрифт */
+    margin-top: 0;                 /* Убираем отступ сверху */
+    margin-bottom: 20px;           /* Отступ снизу */
+    font-weight: bold;             /* Жирное начертание */
+}
+  
+/* Основной текст */
+.intro-text p {
+    width: 722px;                  /* Фиксированная ширина */
+    font-size: 32px;               /* Большой шрифт */
+    line-height: 1.5;              /* Межстрочный интервал */
+    letter-spacing: 0.06rem;       /* Расстояние между буквами */
+}
+
+/* Горизонтальная линия */
+.line {
+    width: 1164px;                 /* Фиксированная ширина */
+    height: 3px;                   /* Толщина линии */
+    background-color: #000;        /* Черный цвет */
+    margin: 103px 58px 4px 58px;  /* Внешние отступы */
+}
+
+/* ==================== */
+/* СЕКЦИЯ "RECIPE" */
+/* ==================== */
+
+.recipe-section {
+    padding: 44px 80px;            /* Внутренние отступы */
+    justify-content: center;       /* Центрирование */
+    background-color: #fff;        /* Белый фон */
+}
+  
+/* Контейнер для контента */
+.recipe-container {
+    display: flex;
+    max-width: 1285px;            /* Максимальная ширина */
+    width: 100%;                  /* На всю ширину */
+    background-color: white;      /* Белый фон */
+    overflow: hidden;             /* Обрезаем содержимое */
+    align-items: flex-start;      /* Выравнивание по верху */
+}
+  
+/* Изображение рецепта */
+.recipe-container img {
+    width: 494px;                 /* Фиксированная ширина */
+    height: 494px;                /* Фиксированная высота */
+    object-fit: cover;            /* Обрезаем изображение */
+    border-radius: 30px;          /* Скругление углов */
+}
+  
+/* Текстовый блок */
+.recipe-text {
+    align-items: center;          /* Выравнивание по центру */
+    padding-left: 42px;          /* Отступ слева */
+    color: #000;                 /* Черный текст */
+}
+  
+/* Заголовок рецепта */
+.recipe-text h2 {
+    font-size: 48px;             /* Большой шрифт */
+    margin-top: 0;               /* Убираем отступ сверху */
+    margin-bottom: 20px;         /* Отступ снизу */
+    font-weight: bold;           /* Жирное начертание */
+}
+  
+/* Описание рецепта */
+.recipe-text p {
+    width: 722px;                /* Фиксированная ширина */
+    font-size: 32px;             /* Большой шрифт */
+    line-height: 1.5;            /* Межстрочный интервал */
+    letter-spacing: 0.06rem;     /* Расстояние между буквами */
+}

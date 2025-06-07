@@ -2,3 +2,7 @@ fastapi
 uvicorn
 psycopg2
 ultralytics
+python-multipart
+googletrans
+translate
+pydantic 

@@ -1,0 +1,81 @@
+.footer {
+    background-color: #333;         /* Темный фон */
+    color: #fff;                    /* Белый текст */
+    padding: 20px 0;                /* Внутренние отступы */
+}
+
+/* Контейнер для содержимого подвала */
+.container {
+    width: 80%;                     /* Ширина контейнера */
+    margin: 0 auto;                 /* Центрирование */
+    text-align: center;             /* Выравнивание текста */
+}
+
+/* Гибкий контейнер для секций подвала */
+.footer-content {
+    display: flex;
+    justify-content: space-between; /* Распределение по ширине */
+    flex-wrap: wrap;                /* Перенос на новую строку */
+}
+
+/* Секция подвала */
+.footer-section {
+    flex: 1;                        /* Равномерное распределение */
+    margin-bottom: 20px;            /* Отступ снизу */
+}
+
+/* Заголовок секции */
+.footer-section h3 {
+    margin-bottom: 10px;            /* Отступ снизу */
+}
+
+/* Текст в секции */
+.footer-section p {
+    margin-bottom: 10px;            /* Отступ снизу */
+}
+
+/* Список в подвале */
+.footer-section ul {
+    list-style: none;               /* Убираем маркеры */
+    padding: 0;                     /* Убираем отступы */
+}
+
+/* Элементы списка */
+.footer-section ul li {
+    margin-bottom: 5px;             /* Отступ снизу */
+}
+
+/* Ссылки в подвале */
+.footer-section ul li a {
+    color: #fff;                    /* Белый цвет текста */
+    text-decoration: none;          /* Убираем подчеркивание */
+}
+
+/* Эффект при наведении на ссылку */
+.footer-section ul li a:hover {
+    text-decoration: underline;     /* Подчеркивание */
+}
+
+/* Социальные иконки */
+.social-media {
+    display: flex;
+    gap: 10px;                      /* Расстояние между иконками */
+}
+
+/* Стили для иконок */
+.social-icon {
+    color: #fff;                    /* Белый цвет */
+    text-decoration: none;          /* Убираем подчеркивание */
+}
+
+/* Эффект при наведении */
+.social-icon:hover {
+    text-decoration: underline;     /* Подчеркивание */
+}
+
+/* Нижняя часть подвала */
+.footer-bottom {
+    text-align: center;             /* Выравнивание по центру */
+    padding-top: 10px;              /* Отступ сверху */
+    border-top: 1px solid #444;     /* Верхняя граница */
+}
