@@ -82,6 +82,8 @@ changeBtn.addEventListener('click', () => {
 
 // Submit file button
 submitBtn.addEventListener('click', async function() {
+    console.log("Script loaded");
+
     if (!currentState.photo) {
         alert('Пожалуйста, выберите фото для загрузки.');
         return;
@@ -95,18 +97,37 @@ submitBtn.addEventListener('click', async function() {
 
     try {
         const formData = new FormData();
-        formData.append('image', currentState.file);
-        
+        formData.append('image', currentState.file, currentState.file.name);
+         console.log("Preparing to send file:", {
+          name: currentState.file.name,
+          size: currentState.file.size,
+          type: currentState.file.type
+        });       
         // Отправляем на FastAPI бэкенд (обычно на том же origin, но порт может быть другим, например 8000)
         const response = await fetch('http://127.0.0.1:8000/upload', {
             method: 'POST',
             body: formData,
-            // Заголовки не нужны, FormData сам устанавливает 'multipart/form-data'
+            headers: { 
+                'Accept': 'application/json',
+            }
         });
 
+
         if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.detail || `Ошибка HTTP: ${response.status}`);
+            console.log("Response status:", response.status, response.statusText);
+
+            let errorMessage = `Ошибка HTTP: ${response.status}`;
+            try {
+                const errorData = await response.json();
+                errorMessage = errorData.detail || JSON.stringify(errorData);
+            } catch (e) {
+                console.error("Full error:", {
+                  error: error,
+                  response: error.response,
+                  stack: error.stack
+                });
+            }
+            throw new Error(errorMessage);
         }
 
         const data = await response.json();
@@ -162,8 +183,8 @@ function displayRecipes(recipes) {
         
         const ingredientsList = document.createElement('ul');
         ingredientsList.className = 'ingredients-list text-start';
-        
-        recipe.ingredients.slice(0, 5).forEach(ingredient => {
+      
+        (recipe.ingredients || []).slice(0, 5).forEach(ingredient => {
             const li = document.createElement('li');
             li.textContent = ingredient;
             ingredientsList.appendChild(li);

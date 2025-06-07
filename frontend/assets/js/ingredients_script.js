@@ -59,39 +59,31 @@ document.getElementById('recipeBtn').addEventListener('click', function() {
         timestamp: new Date().toISOString()
     };
 
-    const serverUrl = 'http://localhost:8000/submit';
-    
-    fetch(serverUrl, {
+
+    const response = await fetch('http://localhost:8000/submit', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(ingredientsData)
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Ошибка сервера');
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Ответ сервера:', data);
-        if (data.success && data.dishes) {
-            // Преобразуем dishes в формат, ожидаемый displayRecipes
-            const recipes = data.dishes.map(dish => ({
-                name: dish.name,
-                url: `/recipe${dish.id}.html`,  // Формируем URL вида /recipe12.html
-                ingredients: dish.ingredients
-            }));
-            displayRecipes(recipes);
-        } else {
-            throw new Error('Сервер не вернул список блюд');
-        }
-    })
-    .catch(error => {
-        console.error('Ошибка:', error);
-        alert('Ошибка при загрузке рецептов: ' + error.message);
-    });
+    
+    if (!response.ok) {
+        throw new Error('Ошибка сервера');
+    }
+
+    const data = await response.json();
+
+    if (data.success && data.dishes) {
+        const recipes = data.dishes.map(dish => ({
+            name: dish.name,
+            url: `/recipe${dish.id}.html`,
+            ingredients: dish.ingredients
+        }));
+        displayRecipes(recipes);
+    } else {
+        throw new Error('Сервер не вернул список блюд');
+    }
 });
 
 
