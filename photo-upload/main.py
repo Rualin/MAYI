@@ -103,40 +103,35 @@ async def get_ingredients_page():
 async def get_recipe_page():
     return FileResponse("recipe.html")
 
-# @app.post("/upload")
-# async def upload_file(image: UploadFile = File(...)):
-#     try:
-#         # Validate file
-#         if not image.filename or not allowed_file(image.filename):
-#             raise HTTPException(400, detail="Only image files are allowed (JPEG, JPG, PNG, WEBP)")
-        
-#         # Check file size
-#         contents = await image.read()
-#         if len(contents) > MAX_FILE_SIZE:
-#             raise HTTPException(400, detail=f"File too large. Max size is {MAX_FILE_SIZE/1024/1024}MB")
-        
-#         # Generate unique filename
-#         ext = Path(image.filename).suffix
-#         filename = f"{uuid.uuid4().hex}{ext}"
-#         file_path = os.path.join(UPLOAD_DIR, filename)
-        
-#         # Save file
-#         with open(file_path, "wb") as buffer:
-#             buffer.write(contents)
-        
-#         # Analyze image (mock implementation)
-#         recipes = analyze_image(file_path)
-        
-#         return {
-#             "success": True,
-#             "message": "Photo uploaded and analyzed successfully!",
-#             "filePath": f"/uploads/{filename}",
-#             "recipes": recipes
-#         }
-#     except Exception as e:
-#         raise HTTPException(500, detail=str(e))
+@app.post("/upload")
+async def upload_file(image: UploadFile = File(...)):
+    try:
+        # Validate file
+        if not image.filename or not allowed_file(image.filename):
+            raise HTTPException(400, detail="Only image files are allowed (JPEG, JPG, PNG, WEBP)")
 
+        # Check file size
+        contents = await image.read()
+        if len(contents) > MAX_FILE_SIZE:
+            raise HTTPException(400, detail=f"File too large. Max size is {MAX_FILE_SIZE/1024/1024}MB")
 
+        # Generate unique filename
+        ext = Path(image.filename).suffix
+        filename = f"{uuid.uuid4().hex}{ext}"
+        file_path = os.path.join(UPLOAD_DIR, filename)
+
+        # Save file
+        with open(file_path, "wb") as buffer:
+            buffer.write(contents)
+
+        # Return file path to the client
+        return JSONResponse(content={
+            "success": True,
+            "message": "Photo uploaded successfully!",
+            "filePath": f"/uploads/{filename}"
+        })
+    except Exception as e:
+        raise HTTPException(500, detail=str(e))
 
 @app.post("/api/submit")
 async def submit_ingredients(request: Request):
