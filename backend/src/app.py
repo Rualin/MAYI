@@ -69,7 +69,7 @@ async def upload_image(image: UploadFile = File(...)):
         ingredients_en = predict_ingredients(img)
         print(f"Найдены ингредиенты: {ingredients_en}")  # Логирование
 
-        ingredients = ["яйца"]
+        ingredients = ['яйцо', 'молоко']
         #for ingredient in ingredients_en:
         #    translator = Translator(from_lang="en", to_lang="ru")
         #    ingredients += [(translator.translate(ingredient))]

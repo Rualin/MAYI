@@ -1,0 +1,36 @@
+@media (max-width: 768px) {
+    /* Мобильная версия шапки */
+    .header-container {
+        flex-direction: column;     /* Вертикальное расположение */
+        gap: 15px;                  /* Расстояние между элементами */
+        text-align: center;         /* Выравнивание по центру */
+    }
+    
+    /* Мобильное меню */
+    nav {
+        gap: 15px;                  /* Расстояние между пунктами */
+        justify-content: center;    /* Центрирование */
+        flex-wrap: wrap;            /* Перенос на новую строку */
+    }
+    
+    /* Вертикальное расположение элементов */
+    .features-list {
+        flex-direction: column;    /* Вертикальный стек */
+    }
+    
+    /* Подвал на мобильных */
+    .footer-content {
+        flex-direction: column;     /* Вертикальный стек */
+        gap: 30px;                 /* Расстояние между секциями */
+    }
+    
+    /* Центрирование секций */
+    .footer-section {
+        text-align: center;        /* Выравнивание по центру */
+    }
+    
+    /* Центрирование иконок */
+    .social-media {
+        justify-content: center;    /* Центрирование */
+    }
+}

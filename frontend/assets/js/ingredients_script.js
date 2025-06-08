@@ -1,28 +1,51 @@
-// Загрузка списка ингредиентов при открытии страницы
+// Recipe elements
+const recipesSection = document.getElementById('recipes-section');
+const recipesContainer = document.getElementById('recipes-container');
+
+
 document.addEventListener('DOMContentLoaded', function() {
-    // URL RAW-файла на GitHub (замените на ваш реальный URL)
-    const githubRawUrl = 'https://raw.githubusercontent.com/Rualin/MAYI/refs/heads/site/photo-upload/ingredients_list.txt';
+    // Готовый список ингредиентов прямо в коде
+    const ingredientsList = [
+        "соль", "сахар", "вода", "мука", "яйца", "молоко", "масло растительное", 
+        "картофель", "фарш свиной", "фарш куриный", "фарш говядина", "хлеб", 
+        "перец молотый", "панировочные сухари", "лук репчатый", "сливочное масло", 
+        "колбаса", "майонез", "хлопья овсяные", "творог", "манная крупа", "кефир", 
+        "грецкие орехи"
+    ];
+
+    // Сортируем ингредиенты по алфавиту для удобства
+    ingredientsList.sort();
     
-    fetch(githubRawUrl)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Не удалось загрузить список ингредиентов');
-            }
-            return response.text();
-        })
-        .then(text => {
-            const ingredients = text.split('\n')
-                .map(line => line.trim())
-                .filter(line => line.length > 0);
-            
-            renderIngredients(ingredients);
-            document.getElementById('recipeBtn').disabled = false;
-        })
-        .catch(error => {
-            console.error('Ошибка загрузки:', error);
-            alert('Ошибка загрузки списка ингредиентов');
-        });
+    renderIngredients(ingredientsList);
+    document.getElementById('recipeBtn').disabled = false;
 });
+
+
+//// Загрузка списка ингредиентов при открытии страницы
+//document.addEventListener('DOMContentLoaded', function() {
+//    // URL RAW-файла на GitHub (замените на ваш реальный URL)
+//    const githubRawUrl = 'https://raw.githubusercontent.com/Rualin/MAYI/refs/heads/site/photo-upload/ingredients_list.txt';
+//    
+//    fetch(githubRawUrl)
+//        .then(response => {
+//            if (!response.ok) {
+//                throw new Error('Не удалось загрузить список ингредиентов');
+//            }
+//            return response.text();
+//        })
+//        .then(text => {
+//            const ingredients = text.split('\n')
+//                .map(line => line.trim())
+//                .filter(line => line.length > 0);
+//            
+//            renderIngredients(ingredients);
+//            document.getElementById('recipeBtn').disabled = false;
+//        })
+//        .catch(error => {
+//            console.error('Ошибка загрузки:', error);
+//            alert('Ошибка загрузки списка ингредиентов');
+//        });
+//});
 
 // Функция отрисовки чекбоксов
 function renderIngredients(ingredients) {
@@ -44,249 +67,168 @@ function renderIngredients(ingredients) {
     });
 }
 
+// Обработчик кнопки поиска
+document.getElementById('recipeBtn').addEventListener('click', async function() {
+    const originalText = this.innerHTML;
+    this.disabled = true;
+    this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Поиск...';
 
-document.getElementById('recipeBtn').addEventListener('click', function() {
-    const checkboxes = document.querySelectorAll('#ingredientsContainer .form-check-input:checked');
-    const selectedIngredients = Array.from(checkboxes).map(checkbox => checkbox.value);
+    try {
+        const checkboxes = document.querySelectorAll('#ingredientsContainer .form-check-input:checked');
+        const selectedIngredients = Array.from(checkboxes).map(checkbox => checkbox.value);
 
-    if (selectedIngredients.length === 0) {
-        alert('Пожалуйста, выберите хотя бы один ингредиент');
-        return;
+        if (selectedIngredients.length === 0) {
+            throw new Error('Пожалуйста, выберите хотя бы один ингредиент');
+        }
+
+        const ingredientsData = {
+            ingredients: selectedIngredients,
+            timestamp: new Date().toISOString()
+        };
+
+        const serverUrl = 'http://127.0.0.1:8000/api/submit';
+        
+        const response = await fetch(serverUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(ingredientsData)
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || `Ошибка HTTP: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        if (data.error) {
+            throw new Error(data.error);
+        }
+
+        // Проверяем успешность и наличие рецептов
+        if (!data.success) {
+            throw new Error('Не удалось найти рецепты');
+        }
+
+        // Передаем весь объект ответа в displayRecipes
+        showMockRecipes(data);
+        
+    } catch (error) {
+        console.error('Ошибка при поиске:', error);
+        alert(error.message);
+    } finally {
+        this.innerHTML = originalText;
+        this.disabled = false;
     }
-
-    const ingredientsData = {
-        selectedIngredients: selectedIngredients,
-        timestamp: new Date().toISOString()
-    };
-
-
-    const response = await fetch('http://localhost:8000/submit', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(ingredientsData)
-    })
-    
-    if (!response.ok) {
-        throw new Error('Ошибка сервера');
-    }
-
-    const data = await response.json();
-
-    if (data.success && data.dishes) {
-        const recipes = data.dishes.map(dish => ({
-            name: dish.name,
-            url: `/recipe${dish.id}.html`,
-            ingredients: dish.ingredients
-        }));
-        displayRecipes(recipes);
-    } else {
-        throw new Error('Сервер не вернул список блюд');
-    }
-});
-
-
-
-
-
-//// Обработчик кнопки поиска
-//document.getElementById('recipeBtn').addEventListener('click', function() {
-//    const checkboxes = document.querySelectorAll('#ingredientsContainer .form-check-input:checked');
-//    const selectedIngredients = Array.from(checkboxes).map(checkbox => checkbox.value);
-//
-//    if (selectedIngredients.length === 0) {
-//        alert('Пожалуйста, выберите хотя бы один ингредиент');
-//        return;
-//    }
-//
-//    // Временная заглушка для демонстрации
-//    
-//    
-//    // код отправки на сервер
-//    const ingredientsData = {
-//        selectedIngredients: selectedIngredients,
-//        timestamp: new Date().toISOString()
-//    };
-//
-//    const serverUrl = 'http://localhost:8000/submit';
-//    
-//    fetch(serverUrl, {
-//        method: 'POST',
-//        headers: {
-//            'Content-Type': 'application/json',
-//        },
-//        body: JSON.stringify(ingredientsData)
-//    })
-//    .then(response => {
-//        if (!response.ok) {
-//            throw new Error('Ошибка сервера');
-//        }
-//        return response.json();
-//    })
-//    .then(data => {
-//        console.log('Успешно отправлено:', data);
-//        displayRecipes(data.recipes); // Предполагаем, что сервер возвращает рецепты
-//    })
-//    .catch(error => {
-//        console.error('Ошибка:', error);
-//        alert('Произошла ошибка при отправке данных');
-//    })
-//    .then(data => {
-//        console.log("Server response:", data); // Добавьте это
-//        if (data.success && data.dishes) {
-//            displayRecipes(data.dishes);
-//        } else {
-//            throw new Error('Invalid server response');
-//        }
-//    })
-//    ;
-
-    //showMockRecipes(selectedIngredients);
 });
 
 // Функция для отображения тестовых рецептов (заглушка)
-//function showMockRecipes(selectedIngredients) {
-//    const mockRecipes = [
-//        {
-//            name: "Салат из помидоров и огурцов",
-//            url: "recipe1.html",
-//            ingredients: ["помидоры", "огурцы", "лук", "масло оливковое", "соль"]
-//        },
-//        {
-//            name: "Омлет с овощами",
-//            url: "recipe2.html",
-//            ingredients: ["яйца", "помидоры", "лук", "перец болгарский", "соль", "масло растительное"]
-//        },
-//        {
-//            name: "Овощной суп",
-//            url: "recipe3.html",
-//            ingredients: ["картофель", "морковь", "лук", "капуста", "помидоры", "зелень", "соль"]
-//        }
-//    ];
-//
-//    displayRecipes(mockRecipes);
-//}
+function showMockRecipes(selectedIngredients) {
+    const mockResponse = {
+        success: true,
+        recipes: [
+            {
+                id: 1,
+                name: "Салат из помидоров и огурцов",
+                ingredients: ["помидоры", "огурцы", "лук", "масло оливковое", "соль"],
+                receipt: "Инструкция по приготовлению..."
+            },
+            {
+                id: 2,
+                name: "Омлет с овощами",
+                ingredients: ["яйца", "помидоры", "лук", "перец болгарский", "соль", "масло растительное"],
+                receipt: "Инструкция по приготовлению..."
+            }
+        ]
+    };
 
-function displayRecipes(recipes) {
-    const recipesContainer = document.getElementById('recipesContainer');
-    const recipesSection = document.getElementById('recipesSection');
+    displayRecipes(mockResponse);
+}
+
+// Функция для загрузки шаблона
+async function loadTemplate() {
+    try {
+        const response = await fetch('template.html');
+        if (!response.ok) {
+            throw new Error('Не удалось загрузить шаблон');
+        }
+        return await response.text();
+    } catch (error) {
+        console.error('Ошибка загрузки шаблона:', error);
+        throw error;
+    }
+}
+
+// Функция для генерации страницы рецепта
+async function generateRecipePage(recipeData) {
+    try {
+        // Сохраняем рецепт в localStorage
+        localStorage.setItem('currentRecipe', JSON.stringify(recipeData));
+        
+        // Переходим на страницу рецепта
+        window.location.href = `recipe.html?id=${recipeData.id}`;
+    } catch (error) {
+        console.error('Ошибка генерации страницы рецепта:', error);
+        throw error;
+    }
+}
+
+// Функция отображения рецептов
+function displayRecipes(response) {
+    if (!recipesContainer) return;
     
     recipesContainer.innerHTML = '';
     
-    if (!recipes || recipes.length === 0) {
-        recipesContainer.innerHTML = '<div class="col-12 text-center">Рецепты не найдены</div>';
+    if (!response?.success || !response.recipes?.length) {
+        recipesContainer.innerHTML = `
+            <div class="col-12 text-center py-5">
+                <div class="alert alert-info">Рецепты не найдены</div>
+                <p>Попробуйте изменить набор ингредиентов</p>
+            </div>
+        `;
         recipesSection.style.display = 'block';
         return;
     }
 
-    recipes.forEach(recipe => {
+    response.recipes.forEach(recipe => {
         const col = document.createElement('div');
-        col.className = 'col';
-        
-        const cardLink = document.createElement('a');
-        cardLink.href = recipe.url || '#';
-        cardLink.className = 'recipe-link text-decoration-none';
+        col.className = 'col-md-6 col-lg-4 mb-4';
         
         const card = document.createElement('div');
-        card.className = 'card h-100 recipe-card';
+        card.className = 'card h-100 shadow-sm';
+        card.style.cursor = 'pointer';
+        card.onclick = () => generateRecipePage(recipe);
         
-        const cardBody = document.createElement('div');
-        cardBody.className = 'card-body';
+        const imgHtml = recipe.image 
+            ? `<img src="${recipe.image}" class="card-img-top" alt="${recipe.name}" style="height: 200px; object-fit: cover;">`
+            : `<div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                  <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+               </div>`;
         
-        const title = document.createElement('h5');
-        title.className = 'card-title';
-        title.textContent = recipe.name;
+        const ingredientsList = recipe.ingredients.slice(0, 3).map(ing => 
+            `<span class="badge bg-secondary me-1 mb-1">${ing}</span>`
+        ).join('');
         
-        const ingredientsTitle = document.createElement('h6');
-        ingredientsTitle.textContent = 'Ингредиенты:';
-        ingredientsTitle.className = 'mt-3';
+        card.innerHTML = `
+            ${imgHtml}
+            <div class="card-body">
+                <h5 class="card-title">${recipe.name}</h5>
+                <div class="mb-2">${ingredientsList}</div>
+                ${recipe.ingredients.length > 3 
+                    ? `<small class="text-muted">+ ещё ${recipe.ingredients.length - 3} ингредиентов</small>` 
+                    : ''}
+            </div>
+            <div class="card-footer bg-white border-top-0">
+                <small class="text-primary">Нажмите для просмотра</small>
+            </div>
+        `;
         
-        const ingredientsList = document.createElement('ul');
-        ingredientsList.className = 'ingredients-list text-start';
-        
-        (recipe.ingredients || []).slice(0, 5).forEach(ingredient => {
-            const li = document.createElement('li');
-            li.textContent = ingredient;
-            ingredientsList.appendChild(li);
-        });
-        
-        if (recipe.ingredients && recipe.ingredients.length > 5) {
-            const li = document.createElement('li');
-            li.textContent = '...';
-            ingredientsList.appendChild(li);
-        }
-        
-        cardBody.appendChild(title);
-        cardBody.appendChild(ingredientsTitle);
-        cardBody.appendChild(ingredientsList);
-        card.appendChild(cardBody);
-        cardLink.appendChild(card);
-        col.appendChild(cardLink);
+        col.appendChild(card);
         recipesContainer.appendChild(col);
     });
     
     recipesSection.style.display = 'block';
 }
 
-//// Функция отображения рецептов
-//function displayRecipes(recipes) {
-//    const recipesContainer = document.getElementById('recipesContainer');
-//    const recipesSection = document.getElementById('recipesSection');
-//    
-//    recipesContainer.innerHTML = '';
-//    
-//    if (recipes.length === 0) {
-//        recipesContainer.innerHTML = '<div class="col-12 text-center">Рецепты не найдены</div>';
-//        recipesSection.style.display = 'block';
-//        return;
-//    }
-//
-//    recipes.forEach(recipe => {
-//        const col = document.createElement('div');
-//        col.className = 'col';
-//        
-//        const cardLink = document.createElement('a');
-//        cardLink.href = `${recipe.url}?from=search`;
-//        cardLink.className = 'recipe-link text-decoration-none';
-//        
-//        const card = document.createElement('div');
-//        card.className = 'card h-100 recipe-card';
-//        
-//        const cardBody = document.createElement('div');
-//        cardBody.className = 'card-body';
-//        
-//        const title = document.createElement('h5');
-//        title.className = 'card-title';
-//        title.textContent = recipe.name;
-//        
-//        const ingredientsTitle = document.createElement('h6');
-//        ingredientsTitle.textContent = 'Ингредиенты:';
-//        ingredientsTitle.className = 'mt-3';
-//        
-//        const ingredientsList = document.createElement('ul');
-//        ingredientsList.className = 'ingredients-list text-start';
-//        
-//        recipe.ingredients.slice(0, 5).forEach(ingredient => {
-//            const li = document.createElement('li');
-//            li.textContent = ingredient;
-//            ingredientsList.appendChild(li);
-//        });
-//        
-//        if (recipe.ingredients.length > 5) {
-//            const li = document.createElement('li');
-//            li.textContent = '...';
-//            ingredientsList.appendChild(li);
-//        }
-//        
-//        cardBody.appendChild(title);
-//        cardBody.appendChild(ingredientsTitle);
-//        cardBody.appendChild(ingredientsList);
-//        card.appendChild(cardBody);
-//        cardLink.appendChild(card);
-//        col.appendChild(cardLink);
-//        recipesContainer.appendChild(col);
-//    });
-//    
-//    recipesSection.style.display = 'block';
-//}

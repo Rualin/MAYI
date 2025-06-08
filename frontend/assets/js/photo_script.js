@@ -82,8 +82,6 @@ changeBtn.addEventListener('click', () => {
 
 // Submit file button
 submitBtn.addEventListener('click', async function() {
-    console.log("Script loaded");
-
     if (!currentState.photo) {
         alert('Пожалуйста, выберите фото для загрузки.');
         return;
@@ -97,37 +95,16 @@ submitBtn.addEventListener('click', async function() {
 
     try {
         const formData = new FormData();
-        formData.append('image', currentState.file, currentState.file.name);
-         console.log("Preparing to send file:", {
-          name: currentState.file.name,
-          size: currentState.file.size,
-          type: currentState.file.type
-        });       
-        // Отправляем на FastAPI бэкенд (обычно на том же origin, но порт может быть другим, например 8000)
+        formData.append('image', currentState.file);
+        
         const response = await fetch('http://127.0.0.1:8000/upload', {
             method: 'POST',
             body: formData,
-            headers: { 
-                'Accept': 'application/json',
-            }
         });
 
-
         if (!response.ok) {
-            console.log("Response status:", response.status, response.statusText);
-
-            let errorMessage = `Ошибка HTTP: ${response.status}`;
-            try {
-                const errorData = await response.json();
-                errorMessage = errorData.detail || JSON.stringify(errorData);
-            } catch (e) {
-                console.error("Full error:", {
-                  error: error,
-                  response: error.response,
-                  stack: error.stack
-                });
-            }
-            throw new Error(errorMessage);
+            const errorData = await response.json();
+            throw new Error(errorData.detail || `Ошибка HTTP: ${response.status}`);
         }
 
         const data = await response.json();
@@ -136,8 +113,12 @@ submitBtn.addEventListener('click', async function() {
             throw new Error(data.error);
         }
 
-        currentState.recipes = data.recipes || [];
-        displayRecipes(currentState.recipes);
+        // Сохраняем весь объект ответа, а не только recipes
+        currentState.recipesResponse = data;
+        
+        // Передаем весь объект ответа в displayRecipes
+        displayRecipes(data);
+        
         saveState();
         
     } catch (error) {
@@ -150,16 +131,18 @@ submitBtn.addEventListener('click', async function() {
     }
 });
 
-// Display recipes function
-function displayRecipes(recipes) {
+//dysplaying recipes function with checking success flag
+function displayRecipes(response) {
     recipesContainer.innerHTML = '';
     
-    if (recipes.length === 0) {
+    // Проверяем успешность запроса и наличие рецептов
+    if (!response.success || !response.recipes || response.recipes.length === 0) {
         recipesContainer.innerHTML = '<div class="col-12 text-center">Рецепты не найдены</div>';
         return;
     }
 
-    recipes.forEach(recipe => {
+    // Работаем с массивом recipes из ответа
+    response.recipes.forEach(recipe => {
         const col = document.createElement('div');
         col.className = 'col';
         
@@ -183,17 +166,20 @@ function displayRecipes(recipes) {
         
         const ingredientsList = document.createElement('ul');
         ingredientsList.className = 'ingredients-list text-start';
-      
-        (recipe.ingredients || []).slice(0, 5).forEach(ingredient => {
-            const li = document.createElement('li');
-            li.textContent = ingredient;
-            ingredientsList.appendChild(li);
-        });
         
-        if (recipe.ingredients.length > 5) {
-            const li = document.createElement('li');
-            li.textContent = '...';
-            ingredientsList.appendChild(li);
+        // Проверяем наличие ingredients и что это массив
+        if (recipe.ingredients && Array.isArray(recipe.ingredients)) {
+            recipe.ingredients.slice(0, 5).forEach(ingredient => {
+                const li = document.createElement('li');
+                li.textContent = ingredient;
+                ingredientsList.appendChild(li);
+            });
+            
+            if (recipe.ingredients.length > 5) {
+                const li = document.createElement('li');
+                li.textContent = '...';
+                ingredientsList.appendChild(li);
+            }
         }
         
         cardBody.appendChild(title);
@@ -256,3 +242,4 @@ document.addEventListener('DOMContentLoaded', function() {
     // For testing only - remove in production
     // simulateFileProcessing().then(recipes => displayRecipes(recipes));
 });
+

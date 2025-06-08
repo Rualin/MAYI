@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <!-- Мета-данные -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Поиск по ингредиентам</title>
+        
+        <!-- Подключение стилей -->
+        <link rel="stylesheet" href="assets/css/main.css">
+        
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        
+        <!-- Иконки Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    </head>
+
+    <body>
+        <!-- Шапка сайта (фиксированная) -->
+        <header class="sticky-top bg-white py-3">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <!-- Логотип с ссылкой на главную -->
+                    <div class="logo-container">
+                        <a href="start_page.html">
+                            <img src="assets/images/reciper_icon.png" alt="Reciper" class="site-icon-custom">
+                        </a>
+                    </div>
+                    
+                    <!-- Основная навигация -->
+                    <nav class="d-flex gap-4">
+                        <a href="ingredients_page.html" class="nav-link-custom">
+                            Поиск по ингредиентам
+                        </a>
+                        <a href="load_photo_page.html" class="nav-link-custom">
+                            Поиск по фото
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <!-- Основной контент страницы -->
+        <main class="container my-4">
+            <section class="py-3">
+                <!-- Заголовок секции -->
+                <div class="subheader-content mb-4">
+                    <h2 class="subheader-title-custom">Поиск по ингредиентам</h2>
+                </div>
+                
+                <!-- Карточка с ингредиентами -->
+                <div class="card bg-light p-4">
+                    <!-- Контейнер для динамически загружаемых чекбоксов -->
+                    <div id="ingredientsContainer" class="ingredients-list">
+                        <!-- Индикатор загрузки (показывается до загрузки ингредиентов) -->
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Загрузка...</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Кнопка поиска рецептов -->
+                    <div class="d-flex justify-content-center mt-4">
+                        <button class="recipe-btn-custom" id="recipeBtn">Найти рецепты</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Секция с результатами поиска рецептов (изначально скрыта) -->
+            <section class="py-4" id="recipes-section" style="display: none;">
+                <div class="container">
+                    <h3 class="mb-4 text-center">Найденные рецепты:</h3>
+                    
+                    <!-- Сетка для карточек рецептов -->
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="recipes-container">
+                        <!-- Карточки рецептов будут добавляться сюда динамически -->
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Подвал сайта -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <!-- Секция "О нас" -->
+                    <div class="footer-section about">
+                        <h3>Reciper</h3>
+                        <p>Находите лучшие рецепты для ваших ингредиентов</p>
+                    </div>
+                    
+                    <!-- Секция "Ссылки" -->
+                    <div class="footer-section links">
+                        <h3>Ссылки</h3>
+                        <ul>
+                            <li><a href="start_page.html">Главная</a></li>
+                            <li><a href="ingredients_page.html">Поиск по ингредиентам</a></li>
+                            <li><a href="load_photo_page.html">Поиск по фото</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Секция "Контакты" -->
+                    <div class="footer-section contact">
+                        <h3>Контакты</h3>
+                        <p>Email: contact@reciper.com</p>
+                    </div>
+                </div>
+                
+                <!-- Копирайт -->
+                <div class="footer-bottom">
+                    <p>&copy; 2025 Reciper.</p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Подключение скриптов -->
+        
+        <!-- Bootstrap Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        
+        <!-- Пользовательский скрипт для работы с ингредиентами -->
+        <script src="assets/js/ingredients_script.js"></script>
+    </body>
+</html>

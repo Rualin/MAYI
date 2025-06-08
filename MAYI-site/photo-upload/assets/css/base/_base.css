@@ -1,0 +1,7 @@
+/* Основные стили для всей страницы */
+body {
+    font-family: Inter, sans-serif;
+    margin: 0;
+    padding: 10px;
+    box-sizing: border-box;
+}
