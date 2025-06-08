@@ -97,11 +97,9 @@ submitBtn.addEventListener('click', async function() {
         const formData = new FormData();
         formData.append('image', currentState.file);
         
-        // Отправляем на FastAPI бэкенд (обычно на том же origin, но порт может быть другим, например 8000)
-        const response = await fetch('http://127.0.0.1:3000/upload', {
+        const response = await fetch('http://127.0.0.1:8000/upload', {
             method: 'POST',
             body: formData,
-            // Заголовки не нужны, FormData сам устанавливает 'multipart/form-data'
         });
 
         if (!response.ok) {
@@ -115,8 +113,12 @@ submitBtn.addEventListener('click', async function() {
             throw new Error(data.error);
         }
 
-        currentState.recipes = data.recipes || [];
-        displayRecipes(currentState.recipes);
+        // Сохраняем весь объект ответа, а не только recipes
+        currentState.recipesResponse = data;
+        
+        // Передаем весь объект ответа в displayRecipes
+        displayRecipes(data);
+        
         saveState();
         
     } catch (error) {
@@ -129,16 +131,18 @@ submitBtn.addEventListener('click', async function() {
     }
 });
 
-// Display recipes function
-function displayRecipes(recipes) {
+//dysplaying recipes function with checking success flag
+function displayRecipes(response) {
     recipesContainer.innerHTML = '';
     
-    if (recipes.length === 0) {
+    // Проверяем успешность запроса и наличие рецептов
+    if (!response.success || !response.recipes || response.recipes.length === 0) {
         recipesContainer.innerHTML = '<div class="col-12 text-center">Рецепты не найдены</div>';
         return;
     }
 
-    recipes.forEach(recipe => {
+    // Работаем с массивом recipes из ответа
+    response.recipes.forEach(recipe => {
         const col = document.createElement('div');
         col.className = 'col';
         
@@ -163,16 +167,19 @@ function displayRecipes(recipes) {
         const ingredientsList = document.createElement('ul');
         ingredientsList.className = 'ingredients-list text-start';
         
-        recipe.ingredients.slice(0, 5).forEach(ingredient => {
-            const li = document.createElement('li');
-            li.textContent = ingredient;
-            ingredientsList.appendChild(li);
-        });
-        
-        if (recipe.ingredients.length > 5) {
-            const li = document.createElement('li');
-            li.textContent = '...';
-            ingredientsList.appendChild(li);
+        // Проверяем наличие ingredients и что это массив
+        if (recipe.ingredients && Array.isArray(recipe.ingredients)) {
+            recipe.ingredients.slice(0, 5).forEach(ingredient => {
+                const li = document.createElement('li');
+                li.textContent = ingredient;
+                ingredientsList.appendChild(li);
+            });
+            
+            if (recipe.ingredients.length > 5) {
+                const li = document.createElement('li');
+                li.textContent = '...';
+                ingredientsList.appendChild(li);
+            }
         }
         
         cardBody.appendChild(title);
