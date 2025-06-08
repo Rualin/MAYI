@@ -117,7 +117,8 @@ submitBtn.addEventListener('click', async function() {
         currentState.recipesResponse = data;
         
         // Передаем весь объект ответа в displayRecipes
-        displayRecipes(data);
+        // displayRecipes(data);
+        showMockRecipes();
         
         saveState();
         
@@ -130,69 +131,6 @@ submitBtn.addEventListener('click', async function() {
         changeBtn.disabled = false;
     }
 });
-
-//dysplaying recipes function with checking success flag
-function displayRecipes(response) {
-    recipesContainer.innerHTML = '';
-    
-    // Проверяем успешность запроса и наличие рецептов
-    if (!response.success || !response.recipes || response.recipes.length === 0) {
-        recipesContainer.innerHTML = '<div class="col-12 text-center">Рецепты не найдены</div>';
-        return;
-    }
-
-    // Работаем с массивом recipes из ответа
-    response.recipes.forEach(recipe => {
-        const col = document.createElement('div');
-        col.className = 'col';
-        
-        const cardLink = document.createElement('a');
-        cardLink.href = `${recipe.url}?from=search`;
-        cardLink.className = 'recipe-link text-decoration-none';
-        
-        const card = document.createElement('div');
-        card.className = 'card h-100 recipe-card';
-        
-        const cardBody = document.createElement('div');
-        cardBody.className = 'card-body';
-        
-        const title = document.createElement('h5');
-        title.className = 'card-title';
-        title.textContent = recipe.name;
-        
-        const ingredientsTitle = document.createElement('h6');
-        ingredientsTitle.textContent = 'Ингредиенты:';
-        ingredientsTitle.className = 'mt-3';
-        
-        const ingredientsList = document.createElement('ul');
-        ingredientsList.className = 'ingredients-list text-start';
-        
-        // Проверяем наличие ingredients и что это массив
-        if (recipe.ingredients && Array.isArray(recipe.ingredients)) {
-            recipe.ingredients.slice(0, 5).forEach(ingredient => {
-                const li = document.createElement('li');
-                li.textContent = ingredient;
-                ingredientsList.appendChild(li);
-            });
-            
-            if (recipe.ingredients.length > 5) {
-                const li = document.createElement('li');
-                li.textContent = '...';
-                ingredientsList.appendChild(li);
-            }
-        }
-        
-        cardBody.appendChild(title);
-        cardBody.appendChild(ingredientsTitle);
-        cardBody.appendChild(ingredientsList);
-        card.appendChild(cardBody);
-        cardLink.appendChild(card);
-        col.appendChild(cardLink);
-        recipesContainer.appendChild(col);
-    });
-    
-    recipesSection.style.display = 'block';
-}
 
 // Save state to sessionStorage
 function saveState() {
@@ -242,3 +180,109 @@ document.addEventListener('DOMContentLoaded', function() {
     // For testing only - remove in production
     // simulateFileProcessing().then(recipes => displayRecipes(recipes));
 });
+
+async function loadTemplate() {
+    try {
+        const response = await fetch('recipe_template.html');
+        if (!response.ok) {
+            throw new Error('Не удалось загрузить шаблон');
+        }
+        return await response.text();
+    } catch (error) {
+        console.error('Ошибка загрузки шаблона:', error);
+        throw error;
+    }
+}
+
+// Функция для генерации страницы рецепта
+async function generateRecipePage(recipeData) {
+    try {
+        // Сохраняем рецепт в localStorage
+        localStorage.setItem('currentRecipe', JSON.stringify(recipeData));
+
+        // Перенаправляем пользователя на страницу рецепта
+        window.location.href = `recipe.html?id=${recipeData.id}`;
+    } catch (error) {
+        console.error('Ошибка генерации страницы рецепта:', error);
+        throw error;
+    }
+}
+
+// Функция для отображения тестовых рецептов (заглушка)
+function showMockRecipes() {
+    const mockResponse = {
+        success: true,
+        recipes: [
+            {
+                id: 1,
+                name: "Салат из помидоров и огурцов",
+                ingredients: ["помидоры", "огурцы", "лук", "масло оливковое", "соль"],
+                receipt: "Инструкция по приготовлению..."
+            },
+            {
+                id: 2,
+                name: "Омлет с овощами",
+                ingredients: ["яйца", "помидоры", "лук", "перец болгарский", "соль", "масло растительное"],
+                receipt: "Инструкция по приготовлению..."
+            }
+        ]
+    };
+
+    displayRecipes(mockResponse);
+}
+
+function displayRecipes(response) {
+    if (!recipesContainer) return;
+
+    recipesContainer.innerHTML = '';
+
+    if (!response?.success || !response.recipes?.length) {
+        recipesContainer.innerHTML = `
+            <div class="col-12 text-center py-5">
+                <div class="alert alert-info">Рецепты не найдены</div>
+                <p>Попробуйте изменить набор ингредиентов</p>
+            </div>
+        `;
+        recipesSection.style.display = 'block';
+        return;
+    }
+
+    response.recipes.forEach(recipe => {
+        const col = document.createElement('div');
+        col.className = 'col-md-6 col-lg-4 mb-4';
+
+        const card = document.createElement('div');
+        card.className = 'card h-100 shadow-sm';
+        card.style.cursor = 'pointer';
+        card.onclick = () => generateRecipePage(recipe);
+
+        const imgHtml = recipe.image
+            ? `<img src="${recipe.image}" class="card-img-top" alt="${recipe.name}" style="height: 200px; object-fit: cover;">`
+            : `<div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                  <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+               </div>`;
+
+        const ingredientsList = recipe.ingredients.slice(0, 3).map(ing =>
+            `<span class="badge bg-secondary me-1 mb-1">${ing}</span>`
+        ).join('');
+
+        card.innerHTML = `
+            ${imgHtml}
+            <div class="card-body">
+                <h5 class="card-title">${recipe.name}</h5>
+                <div class="mb-2">${ingredientsList}</div>
+                ${recipe.ingredients.length > 3
+                    ? `<small class="text-muted">+ ещё ${recipe.ingredients.length - 3} ингредиентов</small>`
+                    : ''}
+            </div>
+            <div class="card-footer bg-white border-top-0">
+                <small class="text-primary">Нажмите для просмотра</small>
+            </div>
+        `;
+
+        col.appendChild(card);
+        recipesContainer.appendChild(col);
+    });
+
+    recipesSection.style.display = 'block';
+}
