@@ -1,4 +1,4 @@
-// File upload elements
+// Элементы DOM для загрузки файлов
 const fileInput = document.getElementById('fileInput');
 const initialBtn = document.getElementById('initialBtn');
 const actionButtons = document.getElementById('actionButtons');
@@ -6,45 +6,57 @@ const changeBtn = document.getElementById('changeBtn');
 const submitBtn = document.getElementById('submitBtn');
 const fileInfo = document.getElementById('fileInfo');
 
-// Recipe elements
+// Элементы DOM для отображения рецептов
 const recipesSection = document.getElementById('recipes-section');
 const recipesContainer = document.getElementById('recipes-container');
 
-// Состояние приложения
+/**
+ * Состояние приложения:
+ * - photo: base64 изображения
+ * - file: объект File
+ * - recipes: массив рецептов
+ * - recipesResponse: полный ответ сервера
+ */
 let currentState = {
     photo: null,
     file: null,
-    recipes: []
+    recipes: [],
+    recipesResponse: null
 };
 
-// Initial file upload setup
+// Инициализация загрузки файла
 initialBtn.addEventListener('click', () => fileInput.click());
 
+/**
+ * Обработчик изменения файла в input
+ */
 fileInput.addEventListener('change', function(e) {
     if (this.files.length > 0) {
         const file = this.files[0];
         currentState.file = file;
 
-        if (!validateFile(file)){
+        // Валидация файла
+        if (!validateFile(file)) {
             return;
         }
 
         const reader = new FileReader();
         
+        // Обработка загрузки файла
         reader.onload = function(e) {
             currentState.photo = e.target.result;
             
-            // Show file info with preview
+            // Отображение информации о файле
             fileInfo.innerHTML = `
                 <div>Выбран файл: <strong>${file.name}</strong></div>
                 <div>Размер: ${(file.size / 1024).toFixed(2)} KB</div>
             `;
             
-            // Switch button visibility
+            // Переключение видимости кнопок
             initialBtn.classList.add('d-none');
             actionButtons.classList.remove('d-none');
             
-            // Clear previous results
+            // Очистка предыдущих результатов
             recipesSection.style.display = 'none';
             recipesContainer.innerHTML = '';
             currentState.recipes = [];
@@ -54,7 +66,11 @@ fileInput.addEventListener('change', function(e) {
     }
 });
 
-// Валидация файла
+/**
+ * Валидация файла
+ * @param {File} file - Объект файла
+ * @returns {boolean} true если файл валиден
+ */
 function validateFile(file) {
     const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
     const maxSize = 5 * 1024 * 1024; // 5MB
@@ -74,29 +90,33 @@ function validateFile(file) {
     return true;
 }
 
-// Change file button
+// Кнопка изменения файла
 changeBtn.addEventListener('click', () => {
     fileInput.value = '';
     fileInput.click();
 });
 
-// Submit file button
+/**
+ * Обработчик отправки файла на сервер
+ */
 submitBtn.addEventListener('click', async function() {
     if (!currentState.photo) {
         alert('Пожалуйста, выберите фото для загрузки.');
         return;
     }
 
-    // Показываем состояние загрузки
+    // Показ состояния загрузки
     const originalText = this.innerHTML;
     this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Обработка...';
     this.disabled = true;
     changeBtn.disabled = true;
 
     try {
+        // Подготовка FormData для отправки
         const formData = new FormData();
         formData.append('image', currentState.file);
         
+        // Отправка на сервер
         const response = await fetch('http://127.0.0.1:8000/upload', {
             method: 'POST',
             body: formData,
@@ -113,26 +133,29 @@ submitBtn.addEventListener('click', async function() {
             throw new Error(data.error);
         }
 
-        // Сохраняем весь объект ответа, а не только recipes
+        // Сохранение ответа сервера
         currentState.recipesResponse = data;
         
-        // Передаем весь объект ответа в displayRecipes
-        // displayRecipes(data);
+        // Показ тестовых рецептов (заглушка)
         showMockRecipes();
         
+        // Сохранение состояния
         saveState();
         
     } catch (error) {
         console.error('Ошибка при отправке:', error);
         alert(`Ошибка при обработке фото: ${error.message}`);
     } finally {
+        // Восстановление состояния кнопки
         this.innerHTML = originalText;
         this.disabled = false;
         changeBtn.disabled = false;
     }
 });
 
-// Save state to sessionStorage
+/**
+ * Сохранение состояния в sessionStorage
+ */
 function saveState() {
     const stateToSave = {
         photo: currentState.photo,
@@ -142,13 +165,15 @@ function saveState() {
     sessionStorage.setItem('recipeSearchState', JSON.stringify(stateToSave));
 }
 
-// Load state from sessionStorage
+/**
+ * Загрузка состояния из sessionStorage
+ */
 function loadState() {
     const savedState = sessionStorage.getItem('recipeSearchState');
     if (savedState) {
         const state = JSON.parse(savedState);
         
-        // Check if state is not older than 1 hour
+        // Проверка, что состояние не старше 1 часа
         const oneHour = 60 * 60 * 1000;
         if (new Date().getTime() - state.timestamp < oneHour) {
             currentState = state;
@@ -162,25 +187,26 @@ function loadState() {
     }
 }
 
-// Check for back navigation
+// Обработчик возврата на страницу
 window.addEventListener('pageshow', function(event) {
     if (event.persisted || performance.getEntriesByType("navigation")[0].type === 'back_forward') {
         loadState();
     }
 });
 
-// Initial load
+// Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
-    // Check if we're returning from a recipe page
+    // Проверка возврата со страницы рецепта
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('from') && urlParams.get('from') === 'recipe') {
         loadState();
     }
-    
-    // For testing only - remove in production
-    // simulateFileProcessing().then(recipes => displayRecipes(recipes));
 });
 
+/**
+ * Загрузка шаблона страницы рецепта
+ * @returns {Promise<string>} HTML шаблона
+ */
 async function loadTemplate() {
     try {
         const response = await fetch('recipe_template.html');
@@ -194,13 +220,16 @@ async function loadTemplate() {
     }
 }
 
-// Функция для генерации страницы рецепта
+/**
+ * Генерация страницы рецепта
+ * @param {Object} recipeData - Данные рецепта
+ */
 async function generateRecipePage(recipeData) {
     try {
-        // Сохраняем рецепт в localStorage
+        // Сохранение рецепта в localStorage
         localStorage.setItem('currentRecipe', JSON.stringify(recipeData));
 
-        // Перенаправляем пользователя на страницу рецепта
+        // Перенаправление на страницу рецепта
         window.location.href = `recipe.html?id=${recipeData.id}`;
     } catch (error) {
         console.error('Ошибка генерации страницы рецепта:', error);
@@ -208,7 +237,9 @@ async function generateRecipePage(recipeData) {
     }
 }
 
-// Функция для отображения тестовых рецептов (заглушка)
+/**
+ * Отображение тестовых рецептов (заглушка)
+ */
 function showMockRecipes() {
     const mockResponse = {
         success: true,
@@ -231,11 +262,17 @@ function showMockRecipes() {
     displayRecipes(mockResponse);
 }
 
+/**
+ * Отображение списка рецептов
+ * @param {Object} response - Ответ сервера с рецептами
+ */
 function displayRecipes(response) {
     if (!recipesContainer) return;
 
+    // Очистка контейнера
     recipesContainer.innerHTML = '';
 
+    // Проверка наличия рецептов
     if (!response?.success || !response.recipes?.length) {
         recipesContainer.innerHTML = `
             <div class="col-12 text-center py-5">
@@ -247,6 +284,7 @@ function displayRecipes(response) {
         return;
     }
 
+    // Создание карточек рецептов
     response.recipes.forEach(recipe => {
         const col = document.createElement('div');
         col.className = 'col-md-6 col-lg-4 mb-4';
@@ -256,16 +294,19 @@ function displayRecipes(response) {
         card.style.cursor = 'pointer';
         card.onclick = () => generateRecipePage(recipe);
 
+        // Генерация HTML для изображения
         const imgHtml = recipe.image
             ? `<img src="${recipe.image}" class="card-img-top" alt="${recipe.name}" style="height: 200px; object-fit: cover;">`
             : `<div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
                   <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
                </div>`;
 
+        // Генерация списка ингредиентов
         const ingredientsList = recipe.ingredients.slice(0, 3).map(ing =>
             `<span class="badge bg-secondary me-1 mb-1">${ing}</span>`
         ).join('');
 
+        // Заполнение карточки
         card.innerHTML = `
             ${imgHtml}
             <div class="card-body">
@@ -284,5 +325,6 @@ function displayRecipes(response) {
         recipesContainer.appendChild(col);
     });
 
+    // Показ секции с рецептами
     recipesSection.style.display = 'block';
 }
