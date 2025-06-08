@@ -67,13 +67,14 @@
             </section>
 
             <!-- Секция с результатами поиска рецептов (изначально скрыта) -->
-            <section id="recipesSection" class="py-3" style="display: none;">
-                <div class="subheader-content mb-4">
-                    <h2 class="subheader-title-custom">Найденные рецепты</h2>
-                </div>
-                
-                <div id="recipesContainer" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                    <!-- Рецепты будут добавляться здесь динамически -->
+            <section class="py-4" id="recipes-section" style="display: none;">
+                <div class="container">
+                    <h3 class="mb-4 text-center">Найденные рецепты:</h3>
+                    
+                    <!-- Сетка для карточек рецептов -->
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="recipes-container">
+                        <!-- Карточки рецептов будут добавляться сюда динамически -->
+                    </div>
                 </div>
             </section>
         </main>
