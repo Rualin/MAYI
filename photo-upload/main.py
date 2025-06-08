@@ -44,44 +44,6 @@ Path(UPLOAD_DIR).mkdir(exist_ok=True)
 def allowed_file(filename: str) -> bool:
     return Path(filename).suffix.lower() in ALLOWED_EXTENSIONS
 
-# def analyze_image(image_path: str) -> List[Dict]:
-#     """Mock image analysis function"""
-#     return [
-#         { 
-#             "name": "Паста Карбонара", 
-#             "url": "/recipe1.html",
-#             "ingredients": [
-#                 "Спагетти - 400 г",
-#                 "Гуанчиале - 150 г",
-#                 "Яичные желтки - 4 шт",
-#                 "Пармезан - 50 г"
-#             ],
-#         },
-#         { 
-#             "name": "Салат Цезарь", 
-#             "url": "/recipe2.html",
-#             "ingredients": [
-#                 "Куриное филе - 300 г",
-#                 "Листья салата",
-#                 "Пармезан",
-#                 "Сухарики"
-#             ]
-#         },
-#         {
-#             "name": 'Тирамису', 
-#             "url": 'recipe3.html',
-#             "ingredients": [
-#                 'Печенье Савоярди - 200 г',
-#                 'Сыр маскарпоне - 500 г',
-#                 'Яйца - 4 шт',
-#                 'Сахар - 100 г',
-#                 'Кофе эспрессо - 200 мл',
-#                 'Какао-порошок',
-#                 'Ликер Амаретто'
-#             ]
-#         }
-#     ]
-
 # Routes
 @app.get("/", response_class=HTMLResponse)
 async def get_root():
