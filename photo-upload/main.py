@@ -13,7 +13,7 @@ app = FastAPI()
 # CORS Configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://127.0.0.1:3000"],
+    allow_origins=["http://127.0.0.1:3000", "http://127.0.0.1:8000"],
     allow_credentials=True,
     allow_methods=["POST", "GET", "OPTIONS"],
     allow_headers=["*"],
@@ -111,6 +111,10 @@ async def get_ingredients_page():
 async def get_ingredients_page():
     return FileResponse("recipe3.html")
 
+@app.get("/template.html", response_class=HTMLResponse)
+async def get_template():
+    return FileResponse("template.html")
+
 @app.post("/upload")
 async def upload_file(image: UploadFile = File(...)):
     try:
@@ -171,4 +175,4 @@ async def get_uploaded_file(filename: str):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=3000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
