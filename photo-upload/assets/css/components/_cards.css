@@ -1,10 +1,11 @@
-/* Карточки рецептов */
+/* Стили для карточек рецептов */
 .recipe-card {
-  border: 1px solid #eee;
-  border-radius: 8px;
-  transition: transform 0.3s ease;
+  border: 1px solid #eee; /* Граница карточки светло-серого цвета */
+  border-radius: 8px; /* Скругление углов карточки */
+  transition: transform 0.3s ease; /* Плавный переход для анимации трансформации */
 }
 
+/* Стили при наведении на карточку рецепта */
 .recipe-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-5px); /* Сдвиг карточки вверх при наведении */
 }
