@@ -1,6 +1,6 @@
 import psycopg2
 
-def fetch_dishes_by_name():
+def list_of_base():
     try:
         # Установка соединения с базой данных
         conn = psycopg2.connect(
@@ -29,5 +29,5 @@ def fetch_dishes_by_name():
         if conn:
             conn.close()
 
-fetch_dishes_by_name()
+list_of_base()
 
