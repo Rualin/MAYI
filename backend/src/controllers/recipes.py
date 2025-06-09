@@ -1,7 +1,7 @@
 from utils.db_connection import get_db_connection
 import psycopg2
 
-
+# Поиск блюд, содержащих ЛЮБОЙ из указанных ингредиентов
 def fetch_dishes_by_ingredients(ingredients):
     try:
         conn = get_db_connection()
@@ -28,8 +28,7 @@ def fetch_dishes_by_ingredients(ingredients):
         if conn:
             conn.close()
 
-
-
+# Поиск блюд по названию
 def fetch_dishes_by_name(dish_names):
     try:
         conn = get_db_connection()
