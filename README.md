@@ -3,6 +3,8 @@ Repository for MPPSD project
 # MAYI
 Repository for MPPSD project
 
+# Database
+![изображение](https://github.com/user-attachments/assets/1ccd64e7-5240-4363-8200-7e583500ad55)
 
 # Fetch Dishes by Name
 
