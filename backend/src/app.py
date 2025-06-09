@@ -18,7 +18,7 @@ app.add_middleware(
     allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*", "Content-Type"],  # Добавьте Content-Type
+    allow_headers=["*", "Content-Type"],
 )
 
 class IngredientsRequest(BaseModel):
@@ -32,11 +32,11 @@ async def get_dishes_by_ingredients(request: IngredientsRequest):
         
         if not ingredients_list:
             raise HTTPException(status_code=400, detail="No ingredients provided")
-        print(f"Received ingredients: {ingredients_list}")  # перед вызовом fetch_dishes_by_ingredients
+        print(f"Received ingredients: {ingredients_list}")
  
         dishes = fetch_dishes_by_ingredients(ingredients_list)
         
-        print(f"Found dishes: {dishes}")  # после вызова fetch_dishes_by_ingredients
+        print(f"Found dishes: {dishes}") 
 
         return {
             "success": True,
