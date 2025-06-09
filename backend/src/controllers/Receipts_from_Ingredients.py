@@ -5,7 +5,7 @@ from json_convector import load_ingredients_from_file
 
 def fetch_dishes(ingredients):
     try:
-        # Установка соединения с базой данных
+        # Установка соединения с базой данных PostgreSQL
         conn = psycopg2.connect(
             host="localhost",
             database="upp",
@@ -14,7 +14,7 @@ def fetch_dishes(ingredients):
         )
         cursor = conn.cursor()
 
-        # Запрос для получения блюд
+        # Запрос для получения блюд, которые содержат указанные ингредиенты
         query_dishes = f"""
         SELECT DISTINCT d.id, d.name, d.receipt,
                c1.name AS category1_name, c2.name AS category2_name,
@@ -28,21 +28,22 @@ def fetch_dishes(ingredients):
         WHERE i.name IS NULL OR i.name IN ({','.join(['%s'] * len(ingredients))});
         """
 
+
         cursor.execute(query_dishes, ingredients)
         dish_results = cursor.fetchall()
 
-        dishes = []
+        dishes = [] 
         
         if dish_results:
             for row in dish_results:
-                dish_id = row[0]
+                dish_id = row[0]  # ID блюда из результата запроса
                 dish = {
-                    "Name": row[1],
-                    "Recipe": row[2],
-                    "Category 1": row[3],
-                    "Category 2": row[4],
-                    "Cooking Time": row[5],
-                    "Ingredients": []
+                    "Name": row[1],  # Название блюда
+                    "Recipe": row[2],  # Рецепт блюда
+                    "Category 1": row[3],  # Первая категория блюда
+                    "Category 2": row[4],  # Вторая категория блюда
+                    "Cooking Time": row[5],  # Время приготовления
+                    "Ingredients": []  # Список ингредиентов для данного блюда
                 }
                 
                 # Запрос для получения ингредиентов для текущего блюда
@@ -54,21 +55,23 @@ def fetch_dishes(ingredients):
                 WHERE di.dish_id = %s;
                 """
                 
+                # Выполнение запроса для получения ингредиентов по ID блюда
                 cursor.execute(query_ingredients, (dish_id,))
                 ingredient_results = cursor.fetchall()
 
+                # Обработка результатов запроса на ингредиенты
                 for ingredient_row in ingredient_results:
                     ingredient = {
-                        "Ingredient ID": ingredient_row[0],
-                        "Name": ingredient_row[1],
-                        "Quantity": float(ingredient_row[2]) if isinstance(ingredient_row[2], Decimal) else ingredient_row[2],
-                        "Unit": ingredient_row[3]
+                        "Ingredient ID": ingredient_row[0],  # ID ингредиента
+                        "Name": ingredient_row[1],  # Название ингредиента
+                        "Quantity": float(ingredient_row[2]) if isinstance(ingredient_row[2], Decimal) else ingredient_row[2],  # Количество, преобразованное в float, если это Decimal
+                        "Unit": ingredient_row[3]  # Единица измерения ингредиента
                     }
-                    dish["Ingredients"].append(ingredient)
+                    dish["Ingredients"].append(ingredient)  
 
-                dishes.append(dish)
+                dishes.append(dish) 
 
-           
+            # Запись собранных данных о блюдах в JSON файл
             with open('dishes.json', 'w', encoding='utf-8') as json_file:
                 json.dump(dishes, json_file, ensure_ascii=False, indent=4)
 
@@ -76,20 +79,14 @@ def fetch_dishes(ingredients):
        
 
     except psycopg2.Error as e:
-        print("Ошибка при работе с базой данных:", e)
+        print("Ошибка при работе с базой данных:", e)  # Обработка ошибок при работе с БД
     finally:
-        if cursor:
+        if cursor:  
             cursor.close()
-        if conn:
+        if conn: 
             conn.close()
 
-# Загрузка ингредиентов из файла и вызов функции
+# Загрузка ингредиентов из файла и вызов функции для получения блюд
 ingredients_list = load_ingredients_from_file('ingredients.json')
 fetch_dishes(ingredients_list)
-
-
-
-
-
-
 
