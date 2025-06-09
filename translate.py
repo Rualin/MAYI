@@ -1,3 +1,4 @@
+# List of classes that model predicts
 CLASSES = ['avocado', 'beans', 'beet', 
            'bell pepper', 'broccoli', 'brus capusta', 
            'cabbage', 'carrot', 'cayliflower', 
@@ -10,8 +11,10 @@ CLASSES = ['avocado', 'beans', 'beet',
            "banana", "bread", 'cheese', 
            'egg', 'grape', 'lemon', 
            'mango', 'orange', 'peach', 
-           'pear', 'strawberry', 'watermelon']
+           'pear', 'strawberry', 'watermelon',
+           'beef', 'chicken', 'pork']
 
+# List of correspondences between the model class and the ingredient from the database
 TRANSLATIONS = [
     ("avocado", "авокадо"), ("beans", ""),
     ("beet", "свекла"), ("bell pepper", "перец болгарский красный"),
@@ -33,16 +36,18 @@ TRANSLATIONS = [
     ("egg", ("яйца", "желтки")), ("grape", ""),
     ("lemon", ("лимон", "лимонный сок")), ("mango", ""),
     ("orange", "апельсин"), ("peach", ""), ("pear", ""),
-    ("strawberry", "клубника"), ("watermelon", "")
+    ("strawberry", "клубника"), ("watermelon", ""),
+    ("beef", "говядина"), ("chicken", ("курица", "куриный окорок")), 
+    ("pork", ("свинина", "свиная шея"))
 ]
 
 def translation(preds):
+    '''
+    Function that translates model predictions to ingredients from DB
+    '''
     trans_dict = dict(TRANSLATIONS)
-    # preds = ["avocado", "beans", "onion"]
     res = []
     for pred in preds:
-        # print(type(trans_dict[pred]))
-        # print(trans_dict[pred])
         val = trans_dict[pred]
         if val == "":
             continue

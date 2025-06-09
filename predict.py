@@ -8,15 +8,14 @@ from PIL import Image
 WEIGHTS_PATH = "best.pt"
 URL = "https://raw.githubusercontent.com/Rualin/MAYI/model/best.pt"
 
+# auto download last version of weights from github
 r = requests.get(URL)
 with open(WEIGHTS_PATH, "wb") as f:
     f.write(r.content)
 
+# model initialization
 model = YOLO(WEIGHTS_PATH)
 
-def get_image():
-    img = Image.open("test_image.jpg")
-    return img
 
 def inference(img, threshold=0.6):
     """ Function to inference model.\n
@@ -42,6 +41,3 @@ def inference(img, threshold=0.6):
 
 if __name__ == "__main__":
     print("This file must be a library!!!")
-    # img = get_image()
-    # res = inference(img)
-    # print(res)
