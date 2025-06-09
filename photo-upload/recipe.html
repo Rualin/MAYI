@@ -19,37 +19,68 @@
 </head>
 
 <body>
-  <!-- Шапка страницы с фиксированным позиционированием -->
-  <header class="recipe-header sticky-top py-3">
-    <div class="container">
-      <div class="d-flex justify-content-between align-items-center">
-        <!-- Логотип с ссылкой на главную страницу -->
-        <a href="start_page.html" class="text-decoration-none">
-          <img src="assets/images/reciper_icon.png" alt="Reciper" width="40">
-        </a>
-        
-        <!-- Навигационное меню -->
-        <nav>
-          <a href="ingredients_page.html" class="btn btn-outline-primary btn-sm">Назад к поиску</a>
-        </nav>
+    <!-- Шапка сайта (фиксированная вверху) -->
+    <header class="sticky-top bg-white py-3">
+      <div class="container">
+          <!-- Флекс-контейнер для лого и навигации -->
+          <div class="d-flex justify-content-between align-items-center">
+              <!-- Логотип с ссылкой на главную -->
+              <div class="logo-container">
+                  <a href="start_page.html">
+                      <img src="assets/images/reciper_icon.png" alt="Reciper" class="site-icon-custom">
+                  </a>
+              </div>
+              
+              <!-- Основная навигация -->
+              <nav class="d-flex gap-4">
+                  <a href="ingredients_page.html" class="nav-link-custom">
+                      Поиск по ингредиентам
+                  </a>
+                  <a href="load_photo_page.html" class="nav-link-custom">
+                      Поиск по фото
+                  </a>
+              </nav>
+          </div>
       </div>
-    </div>
   </header>
 
   <!-- Основное содержимое страницы -->
-  <main class="container my-5" id="recipe-content">
-    <!-- Заглушка для контента, который будет загружен скриптом -->
-    <div class="text-center py-5">
+  <main class="container my-5 px-4" id="recipe-content">
+    <div class="py-5">
       <!-- Индикатор загрузки -->
       <div class="spinner-border text-primary" role="status"></div>
       <p class="mt-2">Загрузка рецепта...</p>
     </div>
   </main>
 
-  <!-- Подвал страницы -->
-  <footer class="bg-light py-4 mt-5">
-    <div class="container text-center">
-      <p>&copy; 2025 Reciper. Все права защищены.</p>
+  <!-- Подвал сайта -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <!-- Блок "О нас" -->
+        <div class="footer-section about">
+          <h3>Reciper</h3>
+          <p>Находите лучшие рецепты для ваших ингредиентов</p>
+        </div>
+        <!-- Блок "Ссылки" -->
+        <div class="footer-section links">
+          <h3>Ссылки</h3>
+          <ul>
+            <li><a href="start_page.html">Главная</a></li>
+            <li><a href="ingredients_page.html">Поиск по ингредиентам</a></li>
+            <li><a href="load_photo_page.html">Поиск по фото</a></li>
+          </ul>
+        </div>
+        <!-- Блок "Контакты" -->
+        <div class="footer-section contact">
+          <h3>Контакты</h3>
+          <p>Email: contact@reciper.com</p>
+        </div>
+      </div>
+      <!-- Копирайт -->
+      <div class="footer-bottom">
+        <p>&copy; 2025 Reciper.</p>
+      </div>
     </div>
   </footer>
 </body>
