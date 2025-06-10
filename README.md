@@ -38,3 +38,7 @@ uvicorn main:app --port 3000
 
 # Внешний вид
 ![Image alt](https://github.com/Rualin/MAYI/raw/develop/images/image1.png)
+![Image alt](https://github.com/Rualin/MAYI/raw/develop/images/image2.png)
+![Image alt](https://github.com/Rualin/MAYI/raw/develop/images/image3.png)
+![Image alt](https://github.com/Rualin/MAYI/raw/develop/images/image4.png)
+
