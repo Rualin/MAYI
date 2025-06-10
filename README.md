@@ -2,7 +2,7 @@
 
 #### 1. Создание базы данных
 
-Используя файл из db нужно создать базу данных в postgres
+##### 1.1. Используя файл из db нужно создать базу данных в postgres.
 ```
 sudo -u postgres psql
 ```
@@ -13,7 +13,8 @@ GRANT ALL PRIVILEGES ON DATABASE mydatabase TO myuser;
 ```
 ```
 psql -U myuser -d mydatabase -f db/dump-upp-202504231613.sql
-```  
+```
+##### 1.2. После этого нужно внести данные в config/config.py
 
 #### 2. Скачивание нужных библиотек
 ```
