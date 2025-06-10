@@ -31,7 +31,7 @@ uvicorn app:app
 ```
 ##### 3.2. Запустить frontend (порт 3000)
 ```
-cd frontend
+cd MAYI-site
 uvicorn main:app --port 3000
 ```
 ##### 3.3. Открыть http://localhost:3000/
