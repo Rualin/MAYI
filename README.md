@@ -35,3 +35,6 @@ cd frontend
 uvicorn main:app --port 3000
 ```
 ##### 3.3. Открыть http://localhost:3000/
+
+# Внешний вид
+![Image alt](https://github.com/Rualin/MAYI/raw/develop/images/image1.png)
