@@ -37,8 +37,15 @@ uvicorn main:app --port 3000
 ##### 3.3. Открыть http://localhost:3000/
 
 # Внешний вид
+### Главная страница
 ![Image alt](https://github.com/Rualin/MAYI/raw/develop/images/image1.png)
 ![Image alt](https://github.com/Rualin/MAYI/raw/develop/images/image2.png)
 ![Image alt](https://github.com/Rualin/MAYI/raw/develop/images/image3.png)
 ![Image alt](https://github.com/Rualin/MAYI/raw/develop/images/image4.png)
+### Поиск по ингредиентам
+![Image alt](https://github.com/Rualin/MAYI/raw/develop/images/image5.png)
+![Image alt](https://github.com/Rualin/MAYI/raw/develop/images/image6.png)
+![Image alt](https://github.com/Rualin/MAYI/raw/develop/images/image7.png)
+### Поиск по фото
+![Image alt](https://github.com/Rualin/MAYI/raw/develop/images/image8.png)
 
