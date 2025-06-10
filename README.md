@@ -14,13 +14,13 @@ GRANT ALL PRIVILEGES ON DATABASE mydatabase TO myuser;
 ```
 psql -U myuser -d mydatabase -f db/dump-upp-202504231613.sql
 ```  
-\
+
 #### 2. Скачивание нужных библиотек
 ```
 python -m venv food_env
 pip install -r requirements.txt
 ```
-\
+
 #### 3. Локальное тестирование
 
 ##### 3.1. Запустить backend (порт 8000)
