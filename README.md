@@ -19,6 +19,7 @@ psql -U myuser -d mydatabase -f db/dump-upp-202504231613.sql
 #### 2. Скачивание нужных библиотек
 ```
 python -m venv food_env
+source food_env/bin/activate
 pip install -r requirements.txt
 ```
 
